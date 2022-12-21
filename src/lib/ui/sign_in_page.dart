@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
+import 'package:src/ui/user_pages/sign_up_page.dart';
 import 'package:src/ui/widgets/custom_button.dart';
 
 import 'widgets/custom_text_form_field.dart';
@@ -88,7 +89,7 @@ class SignInPage extends StatelessWidget {
             ),
             submitButton(),
             SizedBox(
-              height: 200,
+              height: 220,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +99,12 @@ class SignInPage extends StatelessWidget {
                   style: secondaryColorText.copyWith(fontSize: 12),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignUpPage()));
+                    },
                     child: Text(
                       "Sign Up",
                       style: primaryColorText.copyWith(
