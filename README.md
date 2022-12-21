@@ -37,7 +37,7 @@ Aplikasi digital MindMe merupakan aplikasi yang kami kembangkan sebagai upaya un
 <a name="features"></a>
 
 ## Features
-- [x] Fitur daily mood tracker yang bertujuan untuk mengetahui dan mencatat mood dari pengguna setiap harinya.
+- [ ] Fitur daily mood tracker yang bertujuan untuk mengetahui dan mencatat mood dari pengguna setiap harinya.
 - [x] Fitur kedua adalah konten-konten artikel dan video tentang self-care.
 - [x] Fitur mini journal | daily diary yang menjadi wadah bagi pengguna untuk mencurahkan berbagai perasaan atau keluh kesah tentang apa yang ia alami pada hari tersebut.
 - [x] Fitur keempat adalah mood erminder yang bertujuan untuk memberikan peringatan kepada pengguna jika kondisi mood-nya kian hari terus menurun.
