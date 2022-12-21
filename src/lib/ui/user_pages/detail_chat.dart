@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/chat_bubbles.dart';
@@ -51,36 +52,42 @@ class DetailChat extends StatelessWidget {
     }
 
     Widget chatInput() {
-      return Container(
-        margin: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            color: white,
+            child: Row(
               children: [
                 Expanded(
-                  child: Container(
-                    height: 45,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: TextFormField(
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'What do you mind?.',
-                          hintStyle: greyText,
-                        ),
+                  child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 5,
+                    minLines: 1,
+                    cursorColor: primaryColor,
+                    decoration: InputDecoration(
+                      hintText: 'Whar do you mind?',
+                      hintStyle: greyText,
+                      focusColor: primaryColor,
+                      contentPadding: EdgeInsets.all(8),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(defaultRadius)),
+                        borderSide: BorderSide(color: grey),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        borderSide: BorderSide(color: primaryColor),
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: 8,
                 ),
                 Image.asset(
                   'assets/send_button.png',
@@ -88,15 +95,17 @@ class DetailChat extends StatelessWidget {
                 )
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       );
     }
 
     Widget content() {
       return ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16,
+        padding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16,
         ),
         children: [
           ChatBubble(
@@ -108,7 +117,22 @@ class DetailChat extends StatelessWidget {
           ),
           ChatBubble(
             text: 'Terima kasih, dok. Saya jadi termotivasi',
-          )
+          ),
+          ChatBubble(
+            text: 'Terima kasih, dok. Saya jadi termotivasi',
+          ),
+          ChatBubble(
+            text: 'Terima kasih, dok. Saya jadi termotivasi',
+          ),
+          ChatBubble(
+            text: 'Terima kasih, dok. Saya jadi termotivasi',
+          ),
+          ChatBubble(
+            text: 'Terima kasih, dok. Saya jadi termotivasi',
+          ),
+          ChatBubble(
+            text: 'Terima kasih, dok. Saya jadi termotivasi',
+          ),
         ],
       );
     }
@@ -116,8 +140,14 @@ class DetailChat extends StatelessWidget {
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      bottomNavigationBar: chatInput(),
-      body: content(),
+      body: Column(
+        children: [
+          Expanded(
+            child: content(),
+          ),
+          chatInput(),
+        ],
+      ),
     );
   }
 }

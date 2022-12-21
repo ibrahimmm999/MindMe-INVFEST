@@ -13,7 +13,7 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 16,
       ),
       child: Column(

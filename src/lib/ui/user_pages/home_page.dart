@@ -233,6 +233,12 @@ class HomePage extends StatelessWidget {
             quotes(),
             newArticles(),
             feature(
+              secondaryColor,
+              'assets/consult_room_icon.png',
+              'Meet Our Professionals',
+              'Consult Room',
+            ),
+            feature(
               tosca,
               'assets/journey_icon.png',
               'Let\'s Write Your',
@@ -249,12 +255,6 @@ class HomePage extends StatelessWidget {
               'assets/course_video_icon.png',
               'Look New Insights',
               'Take Course Videos',
-            ),
-            feature(
-              secondaryColor,
-              'assets/consult_room_icon.png',
-              'Meet Our Professionals',
-              'Consult Room',
             ),
             const SizedBox(height: 50)
           ],
