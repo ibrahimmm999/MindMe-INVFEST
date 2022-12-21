@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
+import 'package:src/ui/user_pages/articles_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -179,47 +180,51 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    Widget feature(Color color, String iconAssets, String text1, String text2) {
-      return Container(
-        margin: EdgeInsets.only(
-          top: 24,
-          left: defaultMargin,
-          right: defaultMargin,
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        width: double.infinity,
-        height: 92,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(defaultRadius),
-        ),
-        child: Row(
-          children: [
-            Image.asset(
-              iconAssets,
-              width: 44,
-            ),
-            const SizedBox(width: 24),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  text1,
-                  style: whiteText.copyWith(
-                    fontWeight: medium,
+    Widget feature(Color color, String iconAssets, String text1, String text2,
+        Function() onPressed) {
+      return GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 24,
+            left: defaultMargin,
+            right: defaultMargin,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          width: double.infinity,
+          height: 92,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(defaultRadius),
+          ),
+          child: Row(
+            children: [
+              Image.asset(
+                iconAssets,
+                width: 44,
+              ),
+              const SizedBox(width: 24),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text1,
+                    style: whiteText.copyWith(
+                      fontWeight: medium,
+                    ),
                   ),
-                ),
-                Text(
-                  text2,
-                  style: whiteText.copyWith(
-                    fontWeight: semibold,
-                    fontSize: 16,
-                  ),
-                )
-              ],
-            ),
-          ],
+                  Text(
+                    text2,
+                    style: whiteText.copyWith(
+                      fontWeight: semibold,
+                      fontSize: 16,
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -232,30 +237,17 @@ class HomePage extends StatelessWidget {
             header(),
             quotes(),
             newArticles(),
-            feature(
-              secondaryColor,
-              'assets/consult_room_icon.png',
-              'Meet Our Professionals',
-              'Consult Room',
-            ),
-            feature(
-              tosca,
-              'assets/journey_icon.png',
-              'Let\'s Write Your',
-              'Journey',
-            ),
-            feature(
-              primaryColor,
-              'assets/article_icon.png',
-              'Open Your Mind',
-              'See More Articles',
-            ),
-            feature(
-              red,
-              'assets/course_video_icon.png',
-              'Look New Insights',
-              'Take Course Videos',
-            ),
+            feature(secondaryColor, 'assets/consult_room_icon.png',
+                'Meet Our Professionals', 'Consult Room', () {}),
+            feature(tosca, 'assets/journey_icon.png', 'Let\'s Write Your',
+                'Journey', () {}),
+            feature(primaryColor, 'assets/article_icon.png', 'Open Your Mind',
+                'See More Articles', () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ArticlesPage()));
+            }),
+            feature(red, 'assets/course_video_icon.png', 'Look New Insights',
+                'Take Course Videos', () {}),
             const SizedBox(height: 50)
           ],
         ),
