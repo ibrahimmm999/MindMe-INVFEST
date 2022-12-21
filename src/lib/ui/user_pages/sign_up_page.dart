@@ -24,7 +24,7 @@ class SignUpPage extends StatelessWidget {
           color: primaryColor,
         ),
         hintText: 'Your Full Name',
-        controller: emailController,
+        controller: fullNameController,
         radiusBorder: defaultRadius,
       );
     }
@@ -36,7 +36,7 @@ class SignUpPage extends StatelessWidget {
           color: primaryColor,
         ),
         hintText: 'Your Username',
-        controller: emailController,
+        controller: usernameController,
         radiusBorder: defaultRadius,
       );
     }
@@ -132,7 +132,7 @@ class SignUpPage extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  "Email Address",
+                  "Password",
                   style: secondaryColorText.copyWith(
                       fontSize: 16, fontWeight: medium),
                 ),

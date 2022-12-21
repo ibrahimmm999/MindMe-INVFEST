@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/chat_tile.dart';
@@ -35,7 +34,7 @@ class ChatPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/image_no_message.png',
+                'assets/headset.png',
                 width: 80,
               ),
               const SizedBox(
