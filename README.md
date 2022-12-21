@@ -37,11 +37,11 @@ Aplikasi digital MindMe merupakan aplikasi yang kami kembangkan sebagai upaya un
 <a name="features"></a>
 
 ## Features
-- [ ] Fitur daily mood tracker yang bertujuan untuk mengetahui dan mencatat mood dari pengguna setiap harinya.
-- [x] Fitur kedua adalah konten-konten artikel dan video tentang self-care.
-- [x] Fitur mini journal | daily diary yang menjadi wadah bagi pengguna untuk mencurahkan berbagai perasaan atau keluh kesah tentang apa yang ia alami pada hari tersebut.
-- [x] Fitur keempat adalah mood erminder yang bertujuan untuk memberikan peringatan kepada pengguna jika kondisi mood-nya kian hari terus menurun.
-- [x] Fitur terakhir adalah fitur yang diharapkan dapat meringankan permasalahan pengguna, yaitu fitur informasi tentang mental care hotline.
+- Fitur daily mood tracker yang bertujuan untuk mengetahui dan mencatat mood dari pengguna setiap harinya.
+- Fitur kedua adalah konten-konten artikel dan video tentang self-care.
+- Fitur mini journal | daily diary yang menjadi wadah bagi pengguna untuk mencurahkan berbagai perasaan atau keluh kesah tentang apa yang ia alami pada hari tersebut.
+- Fitur keempat adalah mood erminder yang bertujuan untuk memberikan peringatan kepada pengguna jika kondisi mood-nya kian hari terus menurun.
+- Fitur terakhir adalah fitur yang diharapkan dapat meringankan permasalahan pengguna, yaitu fitur informasi tentang mental care hotline.
 
 <a name="technologies-used"></a>
 
@@ -329,7 +329,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 <a name="project-status">
 
 ## Project Status
-Project is: _uncomplete_
+Status Proyek: _uncomplete_
 
 <a name="room-for-improvement">
 
@@ -342,7 +342,7 @@ Peningkatan yang dapat dilakukan:
 
 ## Acknowledgements
 - Terima kasih kepada Allah SWT
-- Projek ini terinspirasi oleh artikel [Mental Health During COVID-19](https://repository.unair.ac.id/116507/10/1_Korespondensi.pdf)
+- Proyek ini terinspirasi oleh artikel [Mental Health During COVID-19](https://repository.unair.ac.id/116507/10/1_Korespondensi.pdf)
 
 <a name="contact"></a>
 
