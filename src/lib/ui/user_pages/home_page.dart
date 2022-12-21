@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
+import 'package:src/ui/user_pages/consult_room_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -238,7 +239,10 @@ class HomePage extends StatelessWidget {
             quotes(),
             newArticles(),
             feature(secondaryColor, 'assets/consult_room_icon.png',
-                'Meet Our Professionals', 'Consult Room', () {}),
+                'Meet Our Professionals', 'Consult Room', () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ConsultRoomPage()));
+            }),
             feature(tosca, 'assets/journey_icon.png', 'Let\'s Write Your',
                 'Journey', () {}),
             feature(primaryColor, 'assets/article_icon.png', 'Open Your Mind',

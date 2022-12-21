@@ -18,6 +18,7 @@ TextStyle greyText = GoogleFonts.poppins(color: grey);
 TextStyle secondaryColorText = GoogleFonts.poppins(color: secondaryColor);
 TextStyle whiteText = GoogleFonts.poppins(color: white);
 TextStyle disableText = GoogleFonts.poppins(color: disableColor);
+TextStyle toscaText = GoogleFonts.poppins(color: tosca);
 
 FontWeight light = FontWeight.w300;
 FontWeight regular = FontWeight.w400;
