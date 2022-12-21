@@ -41,78 +41,79 @@ class SignInPage extends StatelessWidget {
           buttonColor: primaryColor,
           buttonText: "Sign In",
           widthButton: double.infinity,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/main');
+          },
           heightButton: 50);
     }
 
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.all(30),
-        child: SingleChildScrollView(
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              "Login",
-              style: primaryColorText.copyWith(
-                  fontSize: 24, fontWeight: FontWeight.w600),
-            ),
-            Text(
-              "Sign In to Countinue",
-              style: greyText.copyWith(fontSize: 14),
-            ),
-            SizedBox(
-              height: 70,
-            ),
-            Text(
-              "Email Address",
-              style: secondaryColorText.copyWith(
-                  fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            inputEmail(),
-            SizedBox(
-              height: 20,
-            ),
-            Text(
-              "Password",
-              style: secondaryColorText.copyWith(
-                  fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            inputPassword(),
-            SizedBox(
-              height: 30,
-            ),
-            submitButton(),
-            SizedBox(
-              height: 220,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Don't have an account?",
-                  style: secondaryColorText.copyWith(fontSize: 12),
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignUpPage()));
-                    },
-                    child: Text(
-                      "Sign Up",
-                      style: primaryColorText.copyWith(
-                          fontSize: 12, fontWeight: FontWeight.w500),
-                    ))
-              ],
-            )
-          ]),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Container(
+            margin: EdgeInsets.all(defaultMargin),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Login",
+                style: primaryColorText.copyWith(
+                    fontSize: 24, fontWeight: semibold),
+              ),
+              Text(
+                "Sign In to Countinue",
+                style: greyText.copyWith(fontSize: 14),
+              ),
+              const SizedBox(
+                height: 70,
+              ),
+              Text(
+                "Email Address",
+                style: secondaryColorText.copyWith(
+                    fontSize: 16, fontWeight: medium),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              inputEmail(),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Password",
+                style: secondaryColorText.copyWith(
+                    fontSize: 16, fontWeight: medium),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              inputPassword(),
+              const SizedBox(
+                height: 30,
+              ),
+              submitButton(),
+              const SizedBox(
+                height: 220,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account?",
+                    style: secondaryColorText.copyWith(fontSize: 12),
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/sign-up');
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: primaryColorText.copyWith(
+                            fontSize: 12, fontWeight: medium),
+                      ))
+                ],
+              )
+            ]),
+          ),
         ),
       ),
     );

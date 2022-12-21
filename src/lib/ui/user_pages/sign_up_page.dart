@@ -69,103 +69,104 @@ class SignUpPage extends StatelessWidget {
           buttonColor: primaryColor,
           buttonText: "Sign Up",
           widthButton: double.infinity,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/main');
+          },
           heightButton: 50);
     }
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.all(30.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Sign Up",
-                style: primaryColorText.copyWith(
-                    fontSize: 24, fontWeight: FontWeight.w600),
-              ),
-              Text(
-                "Register and Happy Your Mind",
-                style: greyText.copyWith(fontSize: 14),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                "Full Name",
-                style: secondaryColorText.copyWith(
-                    fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              inputFullName(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Username",
-                style: secondaryColorText.copyWith(
-                    fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              inputUsername(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Email Address",
-                style: secondaryColorText.copyWith(
-                    fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              inputEmail(),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Email Address",
-                style: secondaryColorText.copyWith(
-                    fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              inputPassword(),
-              SizedBox(
-                height: 30,
-              ),
-              submitButton(),
-              SizedBox(
-                height: 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account?",
-                    style: secondaryColorText.copyWith(fontSize: 12),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignInPage()));
-                      },
-                      child: Text(
-                        "Sign In",
-                        style: primaryColorText.copyWith(
-                            fontSize: 12, fontWeight: FontWeight.w500),
-                      ))
-                ],
-              )
-            ],
+        child: SafeArea(
+          child: Container(
+            margin: EdgeInsets.all(defaultMargin),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Sign Up",
+                  style: primaryColorText.copyWith(
+                      fontSize: 24, fontWeight: semibold),
+                ),
+                Text(
+                  "Register and Happy Your Mind",
+                  style: greyText.copyWith(fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+                Text(
+                  "Full Name",
+                  style: secondaryColorText.copyWith(
+                      fontSize: 16, fontWeight: medium),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                inputFullName(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Username",
+                  style: secondaryColorText.copyWith(
+                      fontSize: 16, fontWeight: medium),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                inputUsername(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Email Address",
+                  style: secondaryColorText.copyWith(
+                      fontSize: 16, fontWeight: medium),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                inputEmail(),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Email Address",
+                  style: secondaryColorText.copyWith(
+                      fontSize: 16, fontWeight: medium),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                inputPassword(),
+                const SizedBox(
+                  height: 30,
+                ),
+                submitButton(),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already have an account?",
+                      style: secondaryColorText.copyWith(fontSize: 12),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/sign-in');
+                        },
+                        child: Text(
+                          "Sign In",
+                          style: primaryColorText.copyWith(
+                              fontSize: 12, fontWeight: medium),
+                        ))
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
