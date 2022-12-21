@@ -336,7 +336,7 @@ Project is: _uncomplete_
 ## Room for Improvement
 Peningkatan yang dapat dilakukan:
 - Penambahan fitur-fitur lainnya
-- Peningkatan koresponden pada survei selanjutnya
+- Peningkatan kuantitas responden pada survei selanjutnya
 
 <a name="acknowledgements">
 
