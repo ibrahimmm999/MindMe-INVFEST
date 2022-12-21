@@ -1,6 +1,6 @@
-# Invfest 2022
+# Invfest 7.0 - Android App
 <h2 align="center">
-   Aplikasi Digital MindMe <br/>
+   Aplikasi Digital MindMe 📲 <br/>
 </h2>
 <hr>
 
@@ -59,12 +59,6 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 
 ## Screenshots
 <p align=center>
-  <img src="/image/ss/ss_1.png/">
-  <p>Figure 1. Main Menu (light mode)</p>
-  <nl>
-  <img src="/image/ss/ss_4.png/">
-  <p>Figure 2. Main Menu (dark mode)</p>
-  <nl>
   menunggu ardhan
 </p>
 
