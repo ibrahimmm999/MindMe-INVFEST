@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import 'package:google_fonts/google_fonts.dart';
 
+double defaultRadius = 12.0;
+
 Color primaryColor = Color(0xffFFA400);
 Color tosca = Color(0xff6BCBB8);
 Color secondaryColor = Color(0xff111F4A);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:src/ui/user_pages/splash_screen.dart';
+import 'package:src/shared/theme.dart';
+import 'package:src/ui/sign_in_page.dart';
+import 'package:src/ui/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: SignInPage(),
     );
   }
 }
