@@ -59,7 +59,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 
 ## Screenshots
 <p>
-  <img src="/image/HomePage.jpeg/">
+  <img src="/image/HomePage.jpeg/" width=100>
   <p>Gambar 1. Home Page</p>
   <nl>
   <img src="/image/Profil.jpeg/">
