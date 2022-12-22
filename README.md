@@ -58,30 +58,30 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 <a name="screenshots"></a>
 
 ## Screenshots
-<p align="center">
-  <img src="/image/HomePage.jpeg/" align="center">
-  <p align="center">Gambar 1. Home Page</p>
+<p>
+  <img src="/image/HomePage.jpeg/">
+  <p>Gambar 1. Home Page</p>
   <nl>
-  <img src="/image/Profile.jpeg/" align="center">
-  <p align="center">Gambar 2. Profile Page</p>
+  <img src="/image/Profil.jpeg/">
+  <p>Gambar 2. Profile Page</p>
   <nl>
-  <img src="/image/Chat.jpeg/" align="center">
-  <p align="center">Gambar 3. Chat Page</p>
+  <img src="/image/Chat.jpeg/">
+  <p>Gambar 3. Chat Page</p>
   <nl>
-  <img src="/image/Consultant.jpeg/" align="center">
-  <p align="center">Gambar 4. Consultant Room Page</p>
+  <img src="/image/Consultant.jpeg/">
+  <p>Gambar 4. Consultant Room Page</p>
   <nl>
-  <img src="/image/Social.jpeg/" align="center">
-  <p align="center">Gambar 5. Social Page</p>
+  <img src="/image/Social.jpeg/">
+  <p>Gambar 5. Social Page</p>
   <nl>
-  <img src="/image/SocialComment.jpeg/" align="center">
-  <p align="center">Gambar 6. Social Page (comment)</p>
+  <img src="/image/SocialComment.jpeg/">
+  <p>Gambar 6. Social Page (comment)</p>
   <nl>
-  <img src="/image/Article.jpeg/" align="center">
-  <p align="center">Gambar 7. Article Page</p>
+  <img src="/image/Article.jpeg/">
+  <p>Gambar 7. Article Page</p>
   <nl>
-  <img src="/image/Videos.jpeg/" align="center">
-  <p align="center">Gambar 8. Videos Page</p>
+  <img src="/image/Video.jpeg/">
+  <p>Gambar 8. Videos Page</p>
   <nl>
 </p>
 
