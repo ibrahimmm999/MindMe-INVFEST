@@ -35,6 +35,17 @@ class CourseVideosPage extends StatelessWidget {
 
     Widget content() {
       Widget contentTile() {
+        Widget customShadow() {
+          return Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            height: 173,
+          );
+        }
+
         return Container(
           margin: EdgeInsets.symmetric(horizontal: defaultMargin, vertical: 24),
           padding: EdgeInsets.only(top: 4, left: 4, right: 4),
@@ -43,11 +54,12 @@ class CourseVideosPage extends StatelessWidget {
           width: 315,
           child: Column(
             children: [
+              // BACKGROUND IMAGE
               Stack(
                 children: [
                   Container(
                     height: 173,
-                    width: 325,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
@@ -55,6 +67,7 @@ class CourseVideosPage extends StatelessWidget {
                                 "assets/example/article1_example.png"),
                             fit: BoxFit.cover)),
                   ),
+                  customShadow(),
                   Center(
                       child: Container(
                     margin: EdgeInsets.only(top: 60),
@@ -65,9 +78,11 @@ class CourseVideosPage extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => DetailVideoPage()));
                         },
+                        // PLAY BUTTON
                         icon: Icon(
                           Icons.play_circle,
                           size: 50,
+                          color: white,
                         )),
                   ))
                 ],
@@ -75,6 +90,7 @@ class CourseVideosPage extends StatelessWidget {
               SizedBox(
                 height: 12,
               ),
+              // JUDUL, DATE, AUTHOR
               Row(
                 children: [
                   Expanded(
