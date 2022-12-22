@@ -68,7 +68,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
   <img src="/image/Chat.jpeg/">
   <p>Gambar 3. Chat Page</p>
   <nl>
-  <img src="/image/Consultant.jpeg/">
+  <img src="/image/Consultan.jpeg/">
   <p>Gambar 4. Consultant Room Page</p>
   <nl>
   <img src="/image/Social.jpeg/">
