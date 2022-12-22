@@ -58,7 +58,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 <a name="screenshots"></a>
 
 ## Screenshots
-<p>
+<p float="left">
   <img src="/image/HomePage.jpeg/" width=300>
   <p>Gambar 1. Home Page</p>
   <nl>
