@@ -31,11 +31,15 @@ environment:
 dependencies:
   cloud_firestore: ^4.2.0
   cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
   firebase_auth: ^4.2.1
   firebase_core: ^2.4.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
   google_fonts: ^3.0.1
+  url_launcher: ^6.1.7
+  youtube_player_flutter: ^8.1.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
