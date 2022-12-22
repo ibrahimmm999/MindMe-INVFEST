@@ -60,29 +60,29 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 ## Screenshots
 <p float="left">
   <img src="/image/HomePage.jpeg/" width=300>
-  <p>Gambar 1. Home Page</p>
-  <nl>
+  <!-- <p>Gambar 1. Home Page</p>
+  <nl> -->
   <img src="/image/Profil.jpeg/"  width=300>
-  <p>Gambar 2. Profile Page</p>
-  <nl>
+  <!-- <p>Gambar 2. Profile Page</p>
+  <nl> -->
   <img src="/image/Chat.jpeg/"  width=300>
-  <p>Gambar 3. Chat Page</p>
-  <nl>
+  <!-- <p>Gambar 3. Chat Page</p>
+  <nl> -->
   <img src="/image/Consultan.jpeg/"  width=300>
-  <p>Gambar 4. Consultant Room Page</p>
-  <nl>
+  <!-- <p>Gambar 4. Consultant Room Page</p>
+  <nl> -->
   <img src="/image/Socials.jpeg/"  width=300>
-  <p>Gambar 5. Social Page</p>
-  <nl>
+  <!-- <p>Gambar 5. Social Page</p>
+  <nl> -->
   <img src="/image/SocialComment.jpeg/"  width=300>
-  <p>Gambar 6. Social Page (comment)</p>
-  <nl>
+  <!-- <p>Gambar 6. Social Page (comment)</p>
+  <nl> -->
   <img src="/image/Article.jpeg/"  width=300>
-  <p>Gambar 7. Article Page</p>
-  <nl>
+  <!-- <p>Gambar 7. Article Page</p>
+  <nl> -->
   <img src="/image/Video.jpeg/"  width=300>
-  <p>Gambar 8. Videos Page</p>
-  <nl>
+  <!-- <p>Gambar 8. Videos Page</p>
+  <nl> -->
 </p>
 
 <a name="structure"></a>
