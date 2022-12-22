@@ -4,6 +4,8 @@ import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
 import 'package:src/ui/user_pages/consult_room_page.dart';
 import 'package:src/ui/user_pages/course_videos_page.dart';
+import 'package:src/ui/user_pages/detail_journey_page.dart';
+import 'package:src/ui/user_pages/journey_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -245,7 +247,10 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ConsultRoomPage()));
             }),
             feature(tosca, 'assets/journey_icon.png', 'Let\'s Write Your',
-                'Journey', () {}),
+                'Journey', () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => JourneyPage()));
+            }),
             feature(primaryColor, 'assets/article_icon.png', 'Open Your Mind',
                 'See More Articles', () {
               Navigator.push(context,
