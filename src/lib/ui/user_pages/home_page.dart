@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
 import 'package:src/ui/user_pages/consult_room_page.dart';
+import 'package:src/ui/user_pages/course_videos_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -251,7 +252,10 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ArticlesPage()));
             }),
             feature(red, 'assets/course_video_icon.png', 'Look New Insights',
-                'Take Course Videos', () {}),
+                'Take Course Videos', () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CourseVideosPage()));
+            }),
             const SizedBox(height: 50)
           ],
         ),
