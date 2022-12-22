@@ -37,11 +37,11 @@ Aplikasi digital MindMe merupakan aplikasi yang kami kembangkan sebagai upaya un
 <a name="features"></a>
 
 ## Features
-- Fitur daily mood tracker yang bertujuan untuk mengetahui dan mencatat mood dari pengguna setiap harinya.
-- Fitur kedua adalah konten-konten artikel dan video tentang self-care.
-- Fitur mini journal | daily diary yang menjadi wadah bagi pengguna untuk mencurahkan berbagai perasaan atau keluh kesah tentang apa yang ia alami pada hari tersebut.
-- Fitur keempat adalah mood erminder yang bertujuan untuk memberikan peringatan kepada pengguna jika kondisi mood-nya kian hari terus menurun.
-- Fitur terakhir adalah fitur yang diharapkan dapat meringankan permasalahan pengguna, yaitu fitur informasi tentang mental care hotline.
+- Fitur jurnal harian adalah fitur yang dapat digunakan untuk mencurahkan isi hati mereka melalui tulisan.
+- Fitur artikel dan video _bookmark_ adalah fitur yang ditujukan untuk memberikan edukasi terkait kesehatan mental dan _self-care_ kepada pengguna dalam bentuk kumpulan artikel dan video.
+- Fitur _social_ adalah fitur yang dapat dimanfaatkan pengguna untuk berbagi curahan hatinya kepada khalayak umum secara anonim maupun tidak.
+- Fitur konsultasi adalah fitur yang dapat digunakan oleh pengguna untuk melakukan konsultasi secara langsung dengan para tenaga ahli (konsultan psikoloh) yang sesuai dengan bidangnya.
+- Fitur chat adalah fitur yang dapat digunakan oleh pengguna untuk berkomunikasi dengan konsultan psikolog yang telah dipilih atau melakukan _private chat_ dengan pengguna lain.
 
 <a name="technologies-used"></a>
 
@@ -59,7 +59,30 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 
 ## Screenshots
 <p align=center>
-  menunggu ardhan
+  <img src="/image/HomePage.jpeg/">
+  <p>Gambar 1. Home Page</p>
+  <nl>
+  <img src="/image/Profile.jpeg/">
+  <p>Gambar 2. Profile Page</p>
+  <nl>
+  <img src="/image/Chat.jpeg/">
+  <p>Gambar 3. Chat Page</p>
+  <nl>
+  <img src="/image/Consultant.jpeg/">
+  <p>Gambar 4. Consultant Room Page</p>
+  <nl>
+  <img src="/image/Social.jpeg/">
+  <p>Gambar 5. Social Page</p>
+  <nl>
+  <img src="/image/SocialComment.jpeg/">
+  <p>Gambar 6. Social Page (comment)</p>
+  <nl>
+  <img src="/image/Article.jpeg/">
+  <p>Gambar 7. Article Page</p>
+  <nl>
+  <img src="/image/Videos.jpeg/">
+  <p>Gambar 8. Videos Page</p>
+  <nl>
 </p>
 
 <a name="structure"></a>
