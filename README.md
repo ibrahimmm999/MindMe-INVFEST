@@ -71,7 +71,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
   <img src="/image/Consultan.jpeg/">
   <p>Gambar 4. Consultant Room Page</p>
   <nl>
-  <img src="/image/Social.jpeg/">
+  <img src="/image/Socials.jpeg/">
   <p>Gambar 5. Social Page</p>
   <nl>
   <img src="/image/SocialComment.jpeg/">
