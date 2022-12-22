@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/auth_cubit.dart';
+import 'package:src/models/article_model.dart';
 import 'package:src/ui/widgets/custom_button.dart';
 
 import '../../shared/theme.dart';
@@ -57,20 +60,32 @@ class BookmarkArticlePage extends StatelessWidget {
       );
     }
 
-    Widget content() {
+    Widget content(List<ArticleModel> articles) {
       return Expanded(
         child: ListView(
           padding: EdgeInsets.only(
               right: defaultMargin, left: defaultMargin, top: defaultMargin),
-          children: [
-            ArticleTileCard(),
-            ArticleTileCard(),
-            ArticleTileCard(),
-          ],
+          children: articles
+              .map((article) => ArticleTileCard(article: article))
+              .toList(),
         ),
       );
     }
 
-    return content();
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        if (state is AuthSuccess) {
+          return state.user.bookmark_article.isEmpty
+              ? emptyBookmark()
+              : content(state.user.bookmark_article);
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              color: white,
+            ),
+          );
+        }
+      },
+    );
   }
 }

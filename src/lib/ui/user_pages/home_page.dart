@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
 import 'package:src/ui/user_pages/consult_room_page.dart';
@@ -13,43 +15,51 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return Container(
-        margin: EdgeInsets.only(
-          top: defaultMargin,
-          right: defaultMargin,
-          left: defaultMargin,
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      return BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthSuccess) {
+            return Container(
+              margin: EdgeInsets.only(
+                top: defaultMargin,
+                right: defaultMargin,
+                left: defaultMargin,
+              ),
+              child: Row(
                 children: [
-                  Text(
-                    'Hey there,\nwelcome back',
-                    style: secondaryColorText.copyWith(
-                      fontWeight: medium,
-                      fontSize: 24,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hey there,\nwelcome back',
+                          style: secondaryColorText.copyWith(
+                            fontWeight: medium,
+                            fontSize: 24,
+                          ),
+                        ),
+                        Text(
+                          state.user.name,
+                          style: primaryColorText.copyWith(
+                            fontWeight: medium,
+                            fontSize: 24,
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                  Text(
-                    'Budiman',
-                    style: primaryColorText.copyWith(
-                      fontWeight: medium,
-                      fontSize: 24,
+                  ClipOval(
+                    child: Image.asset(
+                      'assets/profile_image_default.png',
+                      width: 54,
                     ),
                   )
                 ],
               ),
-            ),
-            ClipOval(
-              child: Image.asset(
-                'assets/profile_image_default.png',
-                width: 54,
-              ),
-            )
-          ],
-        ),
+            );
+          } else {
+            return SizedBox();
+          }
+        },
       );
     }
 

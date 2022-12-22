@@ -1,9 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/auth_cubit.dart';
+import 'package:src/models/comment_model..dart';
+import 'package:src/models/post_model.dart';
+import 'package:src/models/user_model.dart';
+import 'package:src/services/post_service.dart';
+import 'package:src/services/user_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/comment_bubbles.dart';
 
 class SocialCommentPage extends StatelessWidget {
-  const SocialCommentPage({super.key});
+  SocialCommentPage({required this.post, super.key});
+
+  final PostModel post;
+  final TextEditingController commentController =
+      TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +63,7 @@ class SocialCommentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'user123 - 1 menit',
+              '${post.author} - ${post.date.toString()}',
               style: greyText.copyWith(
                 fontWeight: regular,
                 fontSize: 12,
@@ -60,7 +73,7 @@ class SocialCommentPage extends StatelessWidget {
               height: 4,
             ),
             Text(
-              'kalo cape fisik, istirahat itu udah menjadi obat. tapi kalo yg cape pikiran, istirahat aja rasanya masih cape. kesehatan mental itu penting dan mahal harganya, please sayangi dirimu, jangan terus-menerus nyalahin diri sendiri atas apa yg udah terjadi dan yg ga sesuai ekspektasi',
+              post.content,
               style: secondaryColorText.copyWith(
                 fontWeight: light,
                 fontSize: 12,
@@ -71,8 +84,8 @@ class SocialCommentPage extends StatelessWidget {
               width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.asset(
-                  'assets/example/article1_example.png',
+                child: Image.network(
+                  post.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -90,7 +103,7 @@ class SocialCommentPage extends StatelessWidget {
                   width: 4,
                 ),
                 Text(
-                  '10',
+                  post.comments.length.toString(),
                   style: greyText.copyWith(
                     fontSize: 12,
                   ),
@@ -104,34 +117,15 @@ class SocialCommentPage extends StatelessWidget {
 
     Widget comment() {
       return Column(
-        children: [
-          CommentBubble(
-            isSender: true,
-            text: 'Haloo dok',
-          ),
-          CommentBubble(
-            text: 'Kamu tetap semangat, jangan lupa bahagia :)',
-          ),
-          CommentBubble(
-            text: 'Terima kasih, dok. Saya jadi',
-          ),
-          CommentBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          CommentBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          CommentBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          CommentBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          CommentBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-        ],
-      );
+          children: post.comments
+              .map((e) => CommentBubble(
+                    sender: e.sender,
+                    date: e.date.toString(),
+                    text: e.text,
+                    isSender:
+                        e.senderId == FirebaseAuth.instance.currentUser!.uid,
+                  ))
+              .toList());
     }
 
     Widget chatInput() {
@@ -152,6 +146,7 @@ class SocialCommentPage extends StatelessWidget {
                     maxLines: 5,
                     minLines: 1,
                     cursorColor: primaryColor,
+                    controller: commentController,
                     decoration: InputDecoration(
                       hintText: 'Whar do you mind?',
                       hintStyle: greyText,
@@ -172,9 +167,37 @@ class SocialCommentPage extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                Image.asset(
-                  'assets/send_button.png',
-                  width: 45,
+                BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthSuccess) {
+                      return GestureDetector(
+                        onTap: () {
+                          post.comments.insert(
+                            0,
+                            CommentModel(
+                              id: (post.comments.length + 1).toString(),
+                              senderId: state.user.id,
+                              sender: state.user.name,
+                              text: commentController.text,
+                              date: Timestamp.fromDate(
+                                DateTime.now(),
+                              ),
+                            ),
+                          );
+                          PostService().addComments(post.comments, post.id);
+                          PostService().fetchPosts();
+                          commentController.clear();
+                          FocusManager.instance.primaryFocus?.unfocus();
+                        },
+                        child: Image.asset(
+                          'assets/send_button.png',
+                          width: 45,
+                        ),
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
                 )
               ],
             ),

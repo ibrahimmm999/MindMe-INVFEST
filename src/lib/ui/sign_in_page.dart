@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/sign_up_page.dart';
 import 'package:src/ui/widgets/custom_button.dart';
@@ -36,15 +38,39 @@ class SignInPage extends StatelessWidget {
     }
 
     Widget submitButton() {
-      return CustomButton(
-          radiusButton: defaultRadius,
-          buttonColor: primaryColor,
-          buttonText: "Sign In",
-          widthButton: double.infinity,
-          onPressed: () {
-            Navigator.pushNamed(context, '/main');
-          },
-          heightButton: 50);
+      return BlocConsumer<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, '/main', (route) => false);
+          } else if (state is AuthFailed) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.error),
+              backgroundColor: red,
+            ));
+          }
+        },
+        builder: (context, state) {
+          if (state is AuthLoading) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: white,
+              ),
+            );
+          }
+          return CustomButton(
+              radiusButton: defaultRadius,
+              buttonColor: primaryColor,
+              buttonText: "Sign In",
+              widthButton: double.infinity,
+              onPressed: () {
+                context.read<AuthCubit>().signIn(
+                    email: emailController.text,
+                    password: passwordController.text);
+              },
+              heightButton: 50);
+        },
+      );
     }
 
     return Scaffold(

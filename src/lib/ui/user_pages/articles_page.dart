@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:src/models/article_model.dart';
 import 'package:src/ui/user_pages/detail_article_page.dart';
 import 'package:src/ui/widgets/article_tile_card.dart';
 
@@ -38,11 +39,7 @@ class ArticlesPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.only(
             right: defaultMargin, left: defaultMargin, top: defaultMargin),
-        children: [
-          ArticleTileCard(),
-          ArticleTileCard(),
-          ArticleTileCard(),
-        ],
+        children: [],
       );
     }
 

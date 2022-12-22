@@ -38,11 +38,7 @@ class CourseVideosPage extends StatelessWidget {
       return ListView(
         padding: EdgeInsets.only(
             right: defaultMargin, left: defaultMargin, top: defaultMargin),
-        children: [
-          VideoTileCard(),
-          VideoTileCard(),
-          VideoTileCard(),
-        ],
+        children: [],
       );
     }
 
