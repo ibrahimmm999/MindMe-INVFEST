@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
-import 'package:src/ui/widgets/custom_button.dart';
+import 'package:src/ui/user_pages/social_comment_page.dart';
 
 class SocialPage extends StatelessWidget {
   const SocialPage({super.key});
@@ -48,24 +48,14 @@ class SocialPage extends StatelessWidget {
           ),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Text(
-                  'user1347',
-                  style: secondaryColorText.copyWith(
-                    fontWeight: medium,
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  ' - 1 menit',
-                  style: greyText.copyWith(
-                    fontWeight: regular,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+            Text(
+              'user123 - 1 menit',
+              style: greyText.copyWith(
+                fontWeight: medium,
+                fontSize: 12,
+              ),
             ),
             const SizedBox(
               height: 4,
@@ -91,22 +81,32 @@ class SocialPage extends StatelessWidget {
             const SizedBox(
               height: 4,
             ),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/comment_icon.png',
-                  width: 16,
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  '10',
-                  style: greyText.copyWith(
-                    fontSize: 12,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SocialCommentPage(),
                   ),
-                ),
-              ],
+                );
+              },
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/comment_icon.png',
+                    width: 16,
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    '10',
+                    style: greyText.copyWith(
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -160,24 +160,14 @@ class SocialPage extends StatelessWidget {
             ),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    'You',
-                    style: secondaryColorText.copyWith(
-                      fontWeight: medium,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    ' - 1 Jam',
-                    style: greyText.copyWith(
-                      fontWeight: regular,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+              Text(
+                'You - 1 menit',
+                style: greyText.copyWith(
+                  fontWeight: medium,
+                  fontSize: 12,
+                ),
               ),
               const SizedBox(
                 height: 4,
@@ -227,24 +217,23 @@ class SocialPage extends StatelessWidget {
     }
 
     Widget content() {
-      return Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: defaultMargin,
+      return ListView(
+        padding: EdgeInsets.only(
+          top: 24,
+          left: defaultMargin,
+          right: defaultMargin,
         ),
-        margin: const EdgeInsets.only(top: 24),
-        child: Column(
-          children: [
-            postCard(),
-            postCardSend(),
-          ],
-        ),
+        children: [
+          postCard(),
+          postCardSend(),
+        ],
       );
     }
 
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      body: ListView(children: [content()]),
+      body: content(),
     );
   }
 }
