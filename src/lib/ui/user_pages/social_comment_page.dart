@@ -107,7 +107,7 @@ class SocialCommentPage extends StatelessWidget {
         children: [
           CommentBubble(
             isSender: true,
-            text: 'Haloo dok',
+            text: 'Wahh sangat menginspirasi',
           ),
           CommentBubble(
             text: 'Kamu tetap semangat, jangan lupa bahagia :)',
