@@ -22,7 +22,7 @@ class JourneyPage extends StatelessWidget {
           iconSize: 16,
         ),
         title: Text(
-          'Articles',
+          'Journey',
           style: secondaryColorText.copyWith(
             fontSize: 18,
             fontWeight: medium,
@@ -113,6 +113,17 @@ class JourneyPage extends StatelessWidget {
       appBar: header(),
       body: Column(
         children: [content()],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: tosca,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => DetailJourneyPage()));
+        },
+        child: Icon(
+          Icons.add_rounded,
+          size: 32,
+        ),
       ),
     );
   }
