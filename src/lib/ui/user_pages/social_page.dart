@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/post_cubit.dart';
+import 'package:src/models/post_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/social_comment_page.dart';
 
-class SocialPage extends StatelessWidget {
+class SocialPage extends StatefulWidget {
   const SocialPage({super.key});
 
   @override
+  State<SocialPage> createState() => _SocialPageState();
+}
+
+class _SocialPageState extends State<SocialPage> {
+  @override
   Widget build(BuildContext context) {
+    setState(() {
+      context.read<PostCubit>().fetchPosts();
+    });
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -36,7 +47,7 @@ class SocialPage extends StatelessWidget {
       );
     }
 
-    Widget postCard() {
+    Widget postCard(PostModel post) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         margin: const EdgeInsets.only(bottom: 24),
@@ -51,7 +62,7 @@ class SocialPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'user123 - 1 menit',
+              '${post.author} - ${post.date}',
               style: greyText.copyWith(
                 fontWeight: medium,
                 fontSize: 12,
@@ -61,7 +72,7 @@ class SocialPage extends StatelessWidget {
               height: 4,
             ),
             Text(
-              'kalo cape fisik, istirahat itu udah menjadi obat. tapi kalo yg cape pikiran, istirahat aja rasanya masih cape. kesehatan mental itu penting dan mahal harganya, please sayangi dirimu, jangan terus-menerus nyalahin diri sendiri atas apa yg udah terjadi dan yg ga sesuai ekspektasi',
+              post.content,
               style: secondaryColorText.copyWith(
                 fontWeight: light,
                 fontSize: 12,
@@ -72,8 +83,8 @@ class SocialPage extends StatelessWidget {
               width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.asset(
-                  'assets/example/article1_example.png',
+                child: Image.network(
+                  post.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -86,7 +97,7 @@ class SocialPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SocialCommentPage(),
+                    builder: (context) => SocialCommentPage(post: post),
                   ),
                 );
               },
@@ -100,7 +111,7 @@ class SocialPage extends StatelessWidget {
                     width: 4,
                   ),
                   Text(
-                    '10',
+                    post.comments.length.toString(),
                     style: greyText.copyWith(
                       fontSize: 12,
                     ),
@@ -217,16 +228,20 @@ class SocialPage extends StatelessWidget {
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.only(
-          top: 24,
-          left: defaultMargin,
-          right: defaultMargin,
-        ),
-        children: [
-          postCard(),
-          postCardSend(),
-        ],
+      return BlocBuilder<PostCubit, PostState>(
+        builder: (context, state) {
+          if (state is PostSuccess) {
+            return ListView(
+                padding: EdgeInsets.only(
+                  top: 24,
+                  left: defaultMargin,
+                  right: defaultMargin,
+                ),
+                children: state.posts.map((post) => postCard(post)).toList());
+          } else {
+            return SizedBox();
+          }
+        },
       );
     }
 

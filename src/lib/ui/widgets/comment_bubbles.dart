@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:src/shared/theme.dart';
 
 class CommentBubble extends StatelessWidget {
-  const CommentBubble({Key? key, this.isSender = false, this.text = ''})
+  const CommentBubble(
+      {Key? key,
+      required this.sender,
+      required this.date,
+      this.isSender = false,
+      this.text = ''})
       : super(key: key);
 
   final String text;
   final bool isSender;
+  final String date;
+  final String sender;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +55,7 @@ class CommentBubble extends StatelessWidget {
                         : CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isSender ? 'You - 1 menit' : 'user123 - 1 menit',
+                        isSender ? 'You - $date' : '$sender - $date',
                         style: greyText.copyWith(
                           fontWeight: medium,
                           fontSize: 12,

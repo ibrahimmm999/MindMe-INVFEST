@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:src/models/video_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_video_page.dart';
+import 'package:intl/intl.dart';
 
 class VideoTileCard extends StatelessWidget {
-  const VideoTileCard({super.key});
+  const VideoTileCard({required this.video, super.key});
+
+  final VideoModel video;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +39,7 @@ class VideoTileCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     image: DecorationImage(
-                        image:
-                            AssetImage("assets/example/article1_example.png"),
-                        fit: BoxFit.cover)),
+                        image: AssetImage(video.thumbnail), fit: BoxFit.cover)),
               ),
               customShadow(),
               Center(
@@ -74,7 +76,7 @@ class VideoTileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Kesehatan Mental : Gejala, Faktor dan Penanganan",
+                        video.title,
                         overflow: TextOverflow.clip,
                         style: primaryColorText.copyWith(
                             fontSize: 12, fontWeight: FontWeight.w600),
@@ -83,14 +85,16 @@ class VideoTileCard extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        "19 september 2022",
+                        DateFormat('yyyy-MM-dd')
+                            .format(DateTime.parse(video.date))
+                            .toString(),
                         style: secondaryColorText.copyWith(fontSize: 8),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       Text(
-                        "Yuni Rahmawati",
+                        video.uploader,
                         style: greyText.copyWith(fontSize: 8),
                       )
                     ],
