@@ -11,6 +11,7 @@ import 'package:src/ui/user_pages/sign_up_page.dart';
 
 import 'cubit/auth_cubit.dart';
 import 'cubit/journey_cubit.dart';
+import 'cubit/video_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AuthCubit()),
         BlocProvider(create: (context) => JourneyCubit()),
         BlocProvider(create: (context) => PostCubit()),
+        BlocProvider(create: (context) => VideoCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

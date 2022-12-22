@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class VideoModel extends Equatable {
@@ -5,7 +6,7 @@ class VideoModel extends Equatable {
   final String title;
   final String thumbnail;
   final String uploader;
-  final String date;
+  final Timestamp date;
   final String videoUrl;
   VideoModel(
       {this.id = '',
@@ -13,7 +14,7 @@ class VideoModel extends Equatable {
       this.title = '',
       this.uploader = '',
       this.videoUrl = '',
-      this.date = ""});
+      required this.date});
 
   factory VideoModel.fromJson(String id, Map<String, dynamic> json) =>
       VideoModel(

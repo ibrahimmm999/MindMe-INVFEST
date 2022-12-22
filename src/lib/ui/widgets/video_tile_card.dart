@@ -26,7 +26,7 @@ class VideoTileCard extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 24),
       padding: EdgeInsets.only(top: 4, left: 4, right: 4),
       decoration: BoxDecoration(color: white),
-      height: 269,
+      height: 240,
       width: 315,
       child: Column(
         children: [
@@ -39,7 +39,8 @@ class VideoTileCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     image: DecorationImage(
-                        image: AssetImage(video.thumbnail), fit: BoxFit.cover)),
+                        image: NetworkImage(video.thumbnail),
+                        fit: BoxFit.cover)),
               ),
               customShadow(),
               Center(
@@ -85,8 +86,7 @@ class VideoTileCard extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        DateFormat('yyyy-MM-dd')
-                            .format(DateTime.parse(video.date))
+                        (DateFormat('dd MMMM yyyy').format(video.date.toDate()))
                             .toString(),
                         style: secondaryColorText.copyWith(fontSize: 8),
                       ),

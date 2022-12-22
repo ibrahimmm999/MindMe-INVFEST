@@ -38,6 +38,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   google_fonts: ^3.0.1
+  intl: ^0.18.0
   url_launcher: ^6.1.7
   youtube_player_flutter: ^8.1.1
 
