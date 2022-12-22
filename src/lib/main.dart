@@ -5,7 +5,6 @@ import 'package:src/ui/splash_screen.dart';
 import 'package:src/ui/user_pages/edit_profile_page.dart';
 import 'package:src/ui/user_pages/main_page.dart';
 import 'package:src/ui/user_pages/sign_up_page.dart';
-import 'package:src/ui/user_pages/social_page.dart';
 
 void main() {
   runApp(MyApp());
