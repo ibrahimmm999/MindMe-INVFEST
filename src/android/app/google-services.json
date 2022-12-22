@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "335834088772",
+    "project_id": "mindme-5a2a8",
+    "storage_bucket": "mindme-5a2a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335834088772:android:d8229abb9163337d57c311",
+        "android_client_info": {
+          "package_name": "com.algod.mindme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335834088772-6krrq0166nvhr3obspea9lro9ihlja2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJSAFHh0Bs-uttXGziXSwuJBYSrrhwWXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335834088772-6krrq0166nvhr3obspea9lro9ihlja2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
