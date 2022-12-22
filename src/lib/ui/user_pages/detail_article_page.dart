@@ -101,19 +101,19 @@ class DetailArticlePage extends StatelessWidget {
         );
       }
 
-      return Expanded(
+      return SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(30),
-          margin: EdgeInsets.only(top: 24),
+          padding: EdgeInsets.all(defaultMargin),
+          margin: const EdgeInsets.only(top: 24),
           decoration: BoxDecoration(
               color: white,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(defaultRadius),
                   topRight: Radius.circular(defaultRadius))),
-          child: ListView(
+          child: Column(
             children: [
               headerArticle(),
-              SizedBox(
+              const SizedBox(
                 height: 12,
               ),
               articleImage(),
@@ -127,9 +127,7 @@ class DetailArticlePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: white2,
       appBar: header(),
-      body: Column(
-        children: [content()],
-      ),
+      body: content(),
     );
   }
 }

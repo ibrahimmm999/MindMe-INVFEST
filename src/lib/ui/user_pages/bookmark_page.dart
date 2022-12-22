@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:src/ui/user_pages/bookmark_article_page.dart';
+import 'package:src/ui/user_pages/bookmark_video_page.dart';
 import 'package:src/ui/widgets/custom_button.dart';
 
 import '../../shared/theme.dart';
 
-class BookmarkPage extends StatelessWidget {
+class BookmarkPage extends StatefulWidget {
   const BookmarkPage({super.key});
 
+  @override
+  State<BookmarkPage> createState() => _BookmarkPageState();
+}
+
+class _BookmarkPageState extends State<BookmarkPage> {
+  int bookmarkIndex = 0;
   @override
   Widget build(BuildContext context) {
     Widget header() {
@@ -26,75 +33,102 @@ class BookmarkPage extends StatelessWidget {
       );
     }
 
-    Widget emptyBookmark() {
-      Widget moreArticlesButton() {
-        return CustomButton(
-            radiusButton: defaultRadius,
-            buttonColor: primaryColor,
-            buttonText: "More Articles",
-            widthButton: 150,
-            onPressed: () {},
-            heightButton: 44);
-      }
-
-      Widget seeVideosButton() {
-        return CustomButton(
-            radiusButton: defaultRadius,
-            buttonColor: red,
-            buttonText: "See Videos",
-            widthButton: 120,
-            onPressed: () {},
-            heightButton: 44);
-      }
-
-      return Expanded(
-          child: Container(
-        color: white2,
+    Widget switchContent() {
+      return Container(
         width: double.infinity,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        height: 60,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              height: 80,
-              width: 80,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/no_bookmark_icon.png"),
-                      fit: BoxFit.cover)),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  bookmarkIndex = 0;
+                });
+              },
+              child: Container(
+                color: white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(),
+                    Text(
+                      'Articles',
+                      style:
+                          bookmarkIndex == 0 ? primaryColorText : disableText,
+                    ),
+                    Container(
+                      height: 2,
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      decoration: BoxDecoration(
+                        color: bookmarkIndex == 0
+                            ? primaryColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-            SizedBox(
-              height: 20,
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  bookmarkIndex = 1;
+                });
+              },
+              child: Container(
+                color: white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(),
+                    Text(
+                      'Videos',
+                      style:
+                          bookmarkIndex == 1 ? primaryColorText : disableText,
+                    ),
+                    Container(
+                      height: 2,
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      decoration: BoxDecoration(
+                        color: bookmarkIndex == 1
+                            ? primaryColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
-            Text(
-              "Opss no bookmark yet?",
-              style: secondaryColorText.copyWith(
-                  fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            Text(
-              "Get your favorite articles and videos",
-              style: greyText,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            moreArticlesButton(),
-            SizedBox(
-              height: 20,
-            ),
-            seeVideosButton()
           ],
         ),
-      ));
+      );
     }
 
-    return Column(
-      children: [
-        header(),
-        emptyBookmark(),
-      ],
+    Widget content(int index) {
+      switch (index) {
+        case 0:
+          return BookmarkArticlePage();
+          break;
+        case 1:
+          return BookmarkVideoPage();
+          break;
+        default:
+          return BookmarkArticlePage();
+      }
+    }
+
+    return Scaffold(
+      backgroundColor: white2,
+      body: Column(
+        children: [
+          header(),
+          switchContent(),
+          content(bookmarkIndex),
+        ],
+      ),
     );
   }
 }
