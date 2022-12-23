@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/auth_cubit.dart';
+import 'package:src/cubit/post_cubit.dart';
 import 'package:src/models/comment_model..dart';
 import 'package:src/models/post_model.dart';
 import 'package:src/models/user_model.dart';
@@ -184,8 +185,7 @@ class SocialCommentPage extends StatelessWidget {
                               ),
                             ),
                           );
-                          PostService().addComments(post.comments, post.id);
-                          PostService().fetchPosts();
+                          context.read<PostCubit>().addComment(post);
                           commentController.clear();
                           FocusManager.instance.primaryFocus?.unfocus();
                         },

@@ -6,12 +6,15 @@ import 'package:src/models/post_model.dart';
 import '../models/comment_model..dart';
 
 class PostService {
-  CollectionReference _postReference =
+  final CollectionReference _postReference =
       FirebaseFirestore.instance.collection('posts');
 
   Future<List<PostModel>> fetchPosts() async {
     try {
       QuerySnapshot result = await _postReference.get();
+
+      // Stream<QuerySnapshot<Map<String, dynamic>>> snapshots =
+      //     FirebaseFirestore.instance.collection('posts').snapshots();
 
       List<PostModel> posts = result.docs.map((e) {
         return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
@@ -25,6 +28,7 @@ class PostService {
   Future<PostModel> getPostById(String id) async {
     try {
       DocumentSnapshot snapshot = await _postReference.doc(id).get();
+
       return PostModel(
         id: id,
         authorId: snapshot['authorId'],
@@ -43,15 +47,15 @@ class PostService {
     }
   }
 
-  Future<void> addComments(List<CommentModel> comments, String postId) async {
+  Future<void> addComments(PostModel post) async {
     try {
       List<Map<String, dynamic>> comments_map = [];
-      for (var element in comments) {
+      for (var element in post.comments) {
         comments_map.add(
           element.toJson(),
         );
       }
-      DocumentReference docPost = _postReference.doc(postId);
+      DocumentReference docPost = _postReference.doc(post.id);
       await docPost.update({'comments': comments_map});
     } catch (e) {
       throw e;
