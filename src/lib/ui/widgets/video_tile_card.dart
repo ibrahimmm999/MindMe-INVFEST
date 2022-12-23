@@ -51,7 +51,11 @@ class VideoTileCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailVideoPage(),
+                          builder: (context) => DetailVideoPage(
+                            title: video.title,
+                            videoUrl: video.videoUrl,
+                            uploader: video.uploader,
+                          ),
                         ),
                       );
                     },
