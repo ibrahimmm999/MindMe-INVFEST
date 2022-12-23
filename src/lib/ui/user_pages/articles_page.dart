@@ -48,19 +48,19 @@ class _ArticlesPageState extends State<ArticlesPage> {
     }
 
     Widget articleList(List<ArticleModel> articles) {
-      return Container(
-          margin: EdgeInsets.only(bottom: 24),
-          padding: EdgeInsets.only(top: 4, left: 4, right: 4),
-          decoration: BoxDecoration(color: white),
-          //height: 269,
-          width: 315,
-          child: Column(
-            children: articles.map((ArticleModel article) {
-              return Column(
-                children: [ArticleTileCard(article: article)],
+      return ListView(
+          padding: EdgeInsets.only(
+            top: 24,
+            left: defaultMargin,
+            right: defaultMargin,
+          ),
+          children: articles.map(
+            (e) {
+              return ArticleTileCard(
+                article: e,
               );
-            }).toList(),
-          ));
+            },
+          ).toList());
     }
 
     return BlocConsumer<ArticleCubit, ArticleState>(
@@ -76,11 +76,7 @@ class _ArticlesPageState extends State<ArticlesPage> {
         if (state is ArticleSuccess) {
           return Scaffold(
             appBar: header(),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [Center(child: articleList(state.articles))],
-              ),
-            ),
+            body: articleList(state.articles),
           );
         } else {
           return Scaffold(

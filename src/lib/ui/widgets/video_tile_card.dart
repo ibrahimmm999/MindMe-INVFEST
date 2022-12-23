@@ -24,8 +24,9 @@ class VideoTileCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(bottom: 24),
-      padding: EdgeInsets.only(top: 4, left: 4, right: 4),
-      decoration: BoxDecoration(color: white),
+      padding: EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 8),
+      decoration: BoxDecoration(
+          color: white, borderRadius: BorderRadius.circular(defaultRadius)),
       //height: 240,
       width: 315,
       child: Column(

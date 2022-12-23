@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:src/ui/user_pages/journey_page.dart';
 
 import '../../shared/theme.dart';
-import '../widgets/custom_button.dart';
 
 class JourneyFormPage extends StatefulWidget {
   //constructor have one parameter, optional paramter
@@ -86,12 +85,16 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
             child: IconButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    DateTime currentTime = DateTime.now();
                     //if id not null run add data to store data into firebase
                     //else update data based on id
                     if (widget.id == null) {
                       users!.add({
                         'title': titleController.text,
                         'content': contentController.text,
+                        'imageUrl':
+                            'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b',
+                        'date': Timestamp.fromDate(currentTime)
                       });
                     } else {
                       users!.doc(widget.id).update({

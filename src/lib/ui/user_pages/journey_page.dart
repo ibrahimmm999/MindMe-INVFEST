@@ -61,9 +61,9 @@ class _JourneyPageState extends State<JourneyPage> {
           );
         },
         child: Container(
-          padding: const EdgeInsets.all(4),
+          // padding: const EdgeInsets.all(4),
           width: 315,
-          margin: const EdgeInsets.only(bottom: 4),
+          margin: const EdgeInsets.only(bottom: 10),
           decoration: BoxDecoration(
               color: white, borderRadius: BorderRadius.circular(12)),
           child: Row(
@@ -123,96 +123,18 @@ class _JourneyPageState extends State<JourneyPage> {
     }
 
     Widget journeyList(List<JourneyModel> journeys) {
-      return Container(
-          margin: EdgeInsets.only(top: 24),
-          padding: EdgeInsets.only(top: 4, left: 4, right: 4),
-          decoration: BoxDecoration(color: white),
-          //height: 269,
-          width: 315,
-          child: Column(
-            children: journeys.map((JourneyModel journey) {
-              return Column(
-                children: [journeyTileCard(journey)],
-              );
-            }).toList(),
-          ));
+      return ListView(
+          padding: EdgeInsets.only(
+            top: 24,
+            left: defaultMargin,
+            right: defaultMargin,
+          ),
+          children: journeys.map(
+            (e) {
+              return journeyTileCard(e);
+            },
+          ).toList());
     }
-
-    // Widget content() {
-    //   Widget articleTile() {
-    //     return GestureDetector(
-    //       onTap: () {
-    //         Navigator.push(context,
-    //             MaterialPageRoute(builder: (context) => DetailJourneyPage()));
-    //       },
-    //       child: Container(
-    //         padding: EdgeInsets.all(4),
-    //         width: 315,
-    //         height: 110,
-    //         margin: EdgeInsets.only(bottom: 24),
-    //         decoration: BoxDecoration(
-    //             color: white, borderRadius: BorderRadius.circular(12)),
-    //         child: Row(
-    //           children: [
-    //             Container(
-    //               height: 102,
-    //               width: 102,
-    //               margin: EdgeInsets.only(right: 8),
-    //               decoration: BoxDecoration(
-    //                   borderRadius: BorderRadius.circular(12),
-    //                   image: DecorationImage(
-    //                       image:
-    //                           AssetImage("assets/example/article1_example.png"),
-    //                       fit: BoxFit.cover)),
-    //             ),
-    //             Expanded(
-    //               child: Container(
-    //                 width: 193,
-    //                 child: Column(
-    //                   crossAxisAlignment: CrossAxisAlignment.start,
-    //                   mainAxisAlignment: MainAxisAlignment.center,
-    //                   children: [
-    //                     Text(
-    //                       "Kesehatan Mental : Gejala, Faktor dan Penanganan",
-    //                       style: primaryColorText.copyWith(
-    //                           fontSize: 13, fontWeight: FontWeight.w600),
-    //                       overflow: TextOverflow.clip,
-    //                     ),
-    //                     SizedBox(
-    //                       height: 4,
-    //                     ),
-    //                     Text(
-    //                       "19 september 2022",
-    //                       style: secondaryColorText.copyWith(fontSize: 8),
-    //                     ),
-    //                     SizedBox(
-    //                       height: 4,
-    //                     ),
-    //                     Text(
-    //                       "Yuni Rahmawati",
-    //                       style: greyText.copyWith(fontSize: 8),
-    //                     )
-    //                   ],
-    //                 ),
-    //               ),
-    //             )
-    //           ],
-    //         ),
-    //       ),
-    //     );
-    //   }
-
-    //   return Expanded(
-    //     child: Container(
-    //       padding: EdgeInsets.only(
-    //           right: defaultMargin, left: defaultMargin, top: defaultMargin),
-    //       color: white2,
-    //       child: ListView(
-    //         children: [articleTile(), articleTile()],
-    //       ),
-    //     ),
-    //   );
-    // }
 
     return BlocConsumer<JourneyCubit, JourneyState>(
       listener: (context, state) {
@@ -227,11 +149,19 @@ class _JourneyPageState extends State<JourneyPage> {
         if (state is JourneySuccess) {
           return Scaffold(
             appBar: header(),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [Center(child: journeyList(state.journey))],
-              ),
-            ),
+            body: journeyList(state.journey),
+            floatingActionButton: FloatingActionButton(
+                child: Icon(
+                  Icons.add_rounded,
+                  size: 40,
+                ),
+                backgroundColor: tosca,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => JourneyFormPage()));
+                }),
           );
         } else {
           return Scaffold(
