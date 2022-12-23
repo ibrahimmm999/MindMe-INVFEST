@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/auth_cubit.dart';
+import 'package:src/models/user_model.dart';
 import 'package:src/shared/theme.dart';
+import 'package:src/ui/user_pages/detail_chat.dart';
+
+import '../widgets/custom_button.dart';
 
 class PsikologDetailPage extends StatelessWidget {
-  const PsikologDetailPage({super.key});
+  const PsikologDetailPage({required this.consultant, super.key});
+
+  final UserModel consultant;
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +19,13 @@ class PsikologDetailPage extends StatelessWidget {
         width: double.infinity,
         height: 405,
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("assets/example/detail_psikolog.png"),
-                fit: BoxFit.cover)),
+          image: consultant.photoUrl.isEmpty
+              ? const DecorationImage(
+                  image: AssetImage("assets/profile_image_default_kotak.png"),
+                  fit: BoxFit.cover)
+              : DecorationImage(
+                  image: NetworkImage(consultant.photoUrl), fit: BoxFit.cover),
+        ),
       );
     }
 
@@ -31,6 +43,98 @@ class PsikologDetailPage extends StatelessWidget {
       );
     }
 
+    Widget button() {
+      return BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthSuccess) {
+            return CustomButton(
+                radiusButton: 12,
+                buttonColor: secondaryColor,
+                buttonText: 'Consult Now',
+                widthButton: double.infinity,
+                onPressed: () {
+                  if (state.user.isPremium) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailChat(),
+                      ),
+                    );
+                  } else {
+                    return showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.75,
+                          width: double.infinity,
+                          color: white,
+                          padding: EdgeInsets.all(defaultMargin),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/lock-closed.png',
+                                width: 110,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Opss so sorry this features locked',
+                                style: secondaryColorText.copyWith(
+                                  fontWeight: medium,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Text('Please join premium to get this benefits',
+                                  style: greyText),
+                              const SizedBox(height: 20),
+                              CustomButton(
+                                radiusButton: 12,
+                                buttonColor: primaryColor,
+                                buttonText: 'Get Premium',
+                                widthButton: 154,
+                                heightButton: 44,
+                                onPressed: () {
+                                  context.read<AuthCubit>().updateUser(
+                                        UserModel(
+                                          id: state.user.id,
+                                          email: state.user.email,
+                                          name: state.user.name,
+                                          username: state.user.username,
+                                          bookmark_article:
+                                              state.user.bookmark_article,
+                                          bookmark_video:
+                                              state.user.bookmark_video,
+                                          alamat: state.user.alamat,
+                                          openTime: state.user.openTime,
+                                          photoUrl: state.user.photoUrl,
+                                          resume: state.user.resume,
+                                          role: state.user.role,
+                                          isPremium: true,
+                                        ),
+                                      );
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+                heightButton: 54);
+          } else {
+            return Center(
+              child: CircularProgressIndicator(
+                color: secondaryColor,
+              ),
+            );
+          }
+        },
+      );
+    }
+
     Widget content() {
       return Container(
         margin: EdgeInsets.only(top: 320),
@@ -41,10 +145,12 @@ class PsikologDetailPage extends StatelessWidget {
         padding:
             EdgeInsets.only(top: 26, left: defaultMargin, right: defaultMargin),
         width: double.infinity,
-        child: ListView(
+        height: MediaQuery.of(context).size.height * 0.6,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Mr. Budi, S.Psi.",
+              consultant.name,
               style: secondaryColorText.copyWith(
                   fontSize: 24, fontWeight: FontWeight.w600),
             ),
@@ -62,7 +168,7 @@ class PsikologDetailPage extends StatelessWidget {
                   width: 7,
                 ),
                 Text(
-                  "Bandung",
+                  consultant.alamat,
                   style: secondaryColorText.copyWith(fontSize: 12),
                 ),
               ],
@@ -71,7 +177,7 @@ class PsikologDetailPage extends StatelessWidget {
               height: 4,
             ),
             Text(
-              "Open 24 Jam",
+              consultant.openTime,
               style: toscaText.copyWith(fontSize: 12),
             ),
             SizedBox(
@@ -86,21 +192,24 @@ class PsikologDetailPage extends StatelessWidget {
               height: 8,
             ),
             Text(
-              "Saya merupakan psikolog yang sudah berpengalaman. Saya sudah menangani lebih dari 1000 pasien. Saya siap sedia memberikan solusi dan menjadi tempat untuk bercerita bagi Anda.",
+              consultant.resume,
               style:
                   greyText.copyWith(fontWeight: FontWeight.w300, fontSize: 12),
             ),
-            SizedBox(
-              height: 200,
-            )
+            Spacer(),
+            button(),
+            SizedBox(height: 30),
           ],
         ),
       );
     }
 
     return Scaffold(
-      body: Stack(
-        children: [backgroundImage(), buttonBack(), content()],
+      backgroundColor: white,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [backgroundImage(), buttonBack(), content()],
+        ),
       ),
     );
   }

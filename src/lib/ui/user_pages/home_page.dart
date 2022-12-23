@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/auth_cubit.dart';
+import 'package:src/cubit/consultant_cubit.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
 import 'package:src/ui/user_pages/consult_room_page.dart';

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/consultant_cubit.dart';
 import 'package:src/cubit/post_cubit.dart';
 import 'package:src/cubit/post_stream_cubit.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => PostCubit()),
         BlocProvider(create: (context) => VideoCubit()),
         BlocProvider(create: (context) => PostStreamCubit()),
+        BlocProvider(create: (context) => ConsultanCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

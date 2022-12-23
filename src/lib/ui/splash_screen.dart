@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/shared/theme.dart';
 
 import '../cubit/auth_cubit.dart';
+import '../cubit/consultant_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     Timer(const Duration(seconds: 3), () {
       User? currentUser = FirebaseAuth.instance.currentUser;
+      context.read<ConsultanCubit>().fetchConsultants();
 
       if (currentUser == null) {
         Navigator.pushNamedAndRemoveUntil(

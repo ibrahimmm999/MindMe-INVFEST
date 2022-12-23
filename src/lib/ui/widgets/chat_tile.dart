@@ -3,7 +3,16 @@ import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_chat.dart';
 
 class ChatTile extends StatelessWidget {
-  const ChatTile({Key? key}) : super(key: key);
+  const ChatTile(
+      {required this.name,
+      required this.imageUrl,
+      this.lastMessage = '',
+      Key? key})
+      : super(key: key);
+
+  final String imageUrl;
+  final String name;
+  final String lastMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +34,17 @@ class ChatTile extends StatelessWidget {
             Row(
               children: [
                 ClipOval(
-                  child: Image.asset(
-                    'assets/example/profile_pict_example.png',
-                    width: 54,
-                    fit: BoxFit.cover,
-                  ),
+                  child: imageUrl.isEmpty
+                      ? Image.asset(
+                          'assets/profile_image_default.png',
+                          width: 54,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.network(
+                          imageUrl,
+                          width: 54,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 const SizedBox(
                   width: 12,
@@ -39,13 +54,13 @@ class ChatTile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Mr. Budi, S.Psi.',
+                        name,
                         style: secondaryColorText.copyWith(
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        'Good night, This item is on Good night, This item is on',
+                        lastMessage,
                         style: greyText.copyWith(
                           fontWeight: light,
                         ),
@@ -54,12 +69,6 @@ class ChatTile extends StatelessWidget {
                     ],
                   ),
                 ),
-                Text(
-                  'Now',
-                  style: disableText.copyWith(
-                    fontSize: 10,
-                  ),
-                )
               ],
             ),
             const SizedBox(

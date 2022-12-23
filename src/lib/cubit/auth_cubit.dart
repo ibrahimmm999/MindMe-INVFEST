@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,7 +58,16 @@ class AuthCubit extends Cubit<AuthState> {
   void getCurrentUser(String id) async {
     try {
       UserModel user = await UserService().getUserById(id);
-      print(user);
+      emit(AuthSuccess(user));
+    } catch (e) {
+      emit(AuthFailed(e.toString()));
+    }
+  }
+
+  void updateUser(UserModel user) async {
+    try {
+      emit(AuthLoading());
+      await UserService().updateUser(user);
       emit(AuthSuccess(user));
     } catch (e) {
       emit(AuthFailed(e.toString()));
