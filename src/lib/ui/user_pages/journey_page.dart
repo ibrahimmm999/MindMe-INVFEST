@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:src/cubit/journey_cubit.dart';
+import 'package:src/models/article_model.dart';
 import 'package:src/models/journey_model.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_form_page.dart';
@@ -23,6 +25,11 @@ class _JourneyPageState extends State<JourneyPage> {
   }
 
   Widget build(BuildContext context) {
+    FirebaseFirestore firebase = FirebaseFirestore.instance;
+
+    //get collection from firebase, collection is table in mysql
+    CollectionReference journey = firebase.collection('journey');
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -48,7 +55,7 @@ class _JourneyPageState extends State<JourneyPage> {
       );
     }
 
-    Widget journeyTileCard(JourneyModel journey) {
+    Widget journeyTileCard(JourneyModel journey, String id) {
       return GestureDetector(
         onTap: () {
           Navigator.push(
@@ -109,7 +116,9 @@ class _JourneyPageState extends State<JourneyPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => JourneyFormPage()));
+                            builder: (context) => JourneyFormPage(
+                                  id: id,
+                                )));
                   },
                   icon: Icon(
                     Icons.edit,
@@ -122,16 +131,16 @@ class _JourneyPageState extends State<JourneyPage> {
       );
     }
 
-    Widget journeyList(List<JourneyModel> journeys) {
+    Widget journeyList(List<JourneyModel> journey) {
       return ListView(
           padding: EdgeInsets.only(
             top: 24,
             left: defaultMargin,
             right: defaultMargin,
           ),
-          children: journeys.map(
+          children: journey.map(
             (e) {
-              return journeyTileCard(e);
+              return journeyTileCard(e, e.id);
             },
           ).toList());
     }
