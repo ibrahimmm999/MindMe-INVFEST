@@ -36,7 +36,8 @@ class ArticleTileCard extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                      image: AssetImage(article.thumbnail), fit: BoxFit.cover)),
+                      image: NetworkImage(article.thumbnail),
+                      fit: BoxFit.cover)),
             ),
             Expanded(
               child: Container(
@@ -55,8 +56,7 @@ class ArticleTileCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      DateFormat('yyyy-MM-dd')
-                          .format(DateTime.parse(article.date))
+                      (DateFormat('dd MMMM yyyy').format(article.date.toDate()))
                           .toString(),
                       style: secondaryColorText.copyWith(fontSize: 8),
                     ),
