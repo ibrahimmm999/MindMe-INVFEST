@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:src/shared/theme.dart';
 
 class CommentBubble extends StatelessWidget {
@@ -13,7 +15,7 @@ class CommentBubble extends StatelessWidget {
 
   final String text;
   final bool isSender;
-  final String date;
+  final Timestamp date;
   final String sender;
 
   @override
@@ -55,7 +57,9 @@ class CommentBubble extends StatelessWidget {
                         : CrossAxisAlignment.start,
                     children: [
                       Text(
-                        isSender ? 'You - $date' : '$sender - $date',
+                        isSender
+                            ? 'You - ${DateFormat('dd MMMM yyyy').format(date.toDate()).toString()}'
+                            : '$sender - ${DateFormat('dd MMMM yyyy').format(date.toDate()).toString()}',
                         style: greyText.copyWith(
                           fontWeight: medium,
                           fontSize: 12,

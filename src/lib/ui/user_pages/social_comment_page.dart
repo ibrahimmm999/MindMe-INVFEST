@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/cubit/post_cubit.dart';
 import 'package:src/models/comment_model..dart';
@@ -12,18 +13,16 @@ import 'package:src/services/user_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/comment_bubbles.dart';
 
-class SocialCommentPage extends StatefulWidget {
+class SocialCommentPage extends StatelessWidget {
   SocialCommentPage({required this.post, super.key});
 
   final PostModel post;
 
-  @override
-  State<SocialCommentPage> createState() => _SocialCommentPageState();
-}
-
-class _SocialCommentPageState extends State<SocialCommentPage> {
   final TextEditingController commentController =
       TextEditingController(text: '');
+
+  final Stream<QuerySnapshot> postStream =
+      FirebaseFirestore.instance.collection('posts').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +69,7 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${widget.post.author} - ${widget.post.date.toString()}',
+              '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
               style: greyText.copyWith(
                 fontWeight: regular,
                 fontSize: 12,
@@ -80,7 +79,7 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
               height: 4,
             ),
             Text(
-              widget.post.content,
+              post.content,
               style: secondaryColorText.copyWith(
                 fontWeight: light,
                 fontSize: 12,
@@ -92,7 +91,7 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(defaultRadius),
                 child: Image.network(
-                  widget.post.imageUrl,
+                  post.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -110,7 +109,7 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
                   width: 4,
                 ),
                 Text(
-                  widget.post.comments.length.toString(),
+                  post.comments.length.toString(),
                   style: greyText.copyWith(
                     fontSize: 12,
                   ),
@@ -123,16 +122,35 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
     }
 
     Widget comment() {
-      return Column(
-          children: widget.post.comments
-              .map((e) => CommentBubble(
-                    sender: e.sender,
-                    date: e.date.toString(),
-                    text: e.text,
-                    isSender:
-                        e.senderId == FirebaseAuth.instance.currentUser!.uid,
-                  ))
-              .toList());
+      return StreamBuilder(
+          stream: postStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
+
+            List<PostModel> posts = snapshot.data!.docs.map((e) {
+              return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+            }).toList();
+
+            var postGetStream =
+                posts.where((element) => element.id == post.id).first;
+
+            return Column(
+                children: postGetStream.comments
+                    .map((e) => CommentBubble(
+                          sender: e.sender,
+                          date: e.date,
+                          text: e.text,
+                          isSender: e.senderId ==
+                              FirebaseAuth.instance.currentUser!.uid,
+                        ))
+                    .toList());
+          });
     }
 
     Widget chatInput() {
@@ -179,10 +197,10 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
                     if (state is AuthSuccess) {
                       return GestureDetector(
                         onTap: () {
-                          widget.post.comments.insert(
+                          post.comments.insert(
                             0,
                             CommentModel(
-                              id: (widget.post.comments.length + 1).toString(),
+                              id: (post.comments.length + 1).toString(),
                               senderId: state.user.id,
                               sender: state.user.name,
                               text: commentController.text,
@@ -191,7 +209,7 @@ class _SocialCommentPageState extends State<SocialCommentPage> {
                               ),
                             ),
                           );
-                          context.read<PostCubit>().addComment(widget.post);
+                          context.read<PostCubit>().addComment(post);
                           commentController.clear();
                           FocusManager.instance.primaryFocus?.unfocus();
                         },

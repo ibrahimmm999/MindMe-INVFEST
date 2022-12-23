@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:src/cubit/post_cubit.dart';
 import 'package:src/cubit/post_stream_cubit.dart';
 import 'package:src/models/comment_model..dart';
@@ -8,14 +9,9 @@ import 'package:src/models/post_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/social_comment_page.dart';
 
-class SocialPage extends StatefulWidget {
-  const SocialPage({super.key});
+class SocialPage extends StatelessWidget {
+  SocialPage({super.key});
 
-  @override
-  State<SocialPage> createState() => _SocialPageState();
-}
-
-class _SocialPageState extends State<SocialPage> {
   final Stream<QuerySnapshot> postStream =
       FirebaseFirestore.instance.collection('posts').snapshots();
   @override
@@ -64,7 +60,7 @@ class _SocialPageState extends State<SocialPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${post.author} - ${post.date}',
+              '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
               style: greyText.copyWith(
                 fontWeight: medium,
                 fontSize: 12,
