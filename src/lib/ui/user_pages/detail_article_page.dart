@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:src/models/article_model.dart';
 
+import '../../cubit/article_cubit.dart';
 import '../../shared/theme.dart';
 
-class DetailArticlePage extends StatelessWidget {
-  const DetailArticlePage({super.key});
+class DetailArticlePage extends StatefulWidget {
+  final ArticleModel article;
+  const DetailArticlePage({super.key, required this.article});
 
   @override
+  State<DetailArticlePage> createState() => _DetailArticlePageState();
+}
+
+class _DetailArticlePageState extends State<DetailArticlePage> {
+  @override
+  void initState() {
+    context.read<ArticleCubit>().fetchArticles();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     PreferredSizeWidget header() {
       return AppBar(
@@ -43,7 +58,7 @@ class DetailArticlePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kesehatan Mental : Gejala, Faktor dan Penanganan",
+                      widget.article.title,
                       overflow: TextOverflow.clip,
                       style: primaryColorText.copyWith(
                           fontSize: 14, fontWeight: FontWeight.w600),
@@ -52,14 +67,16 @@ class DetailArticlePage extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "19 september 2022",
+                      (DateFormat('dd MMMM yyyy')
+                              .format(widget.article.date.toDate()))
+                          .toString(),
                       style: secondaryColorText.copyWith(fontSize: 12),
                     ),
                     SizedBox(
                       height: 4,
                     ),
                     Text(
-                      "Yuni Rahmawati",
+                      widget.article.author,
                       style: greyText.copyWith(fontSize: 12),
                     )
                   ],
@@ -85,7 +102,7 @@ class DetailArticlePage extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/example/article_banner.png"),
+                    image: NetworkImage(widget.article.thumbnail),
                     fit: BoxFit.cover),
                 borderRadius: BorderRadius.circular(defaultRadius)));
       }
@@ -94,7 +111,7 @@ class DetailArticlePage extends StatelessWidget {
         return Container(
           margin: EdgeInsets.only(top: 28),
           child: Text(
-            "Sahabat Ukhuwah, sepertinya sudah tidak heran jika mendengar kata depresi, stres dan frustasi. Bukan cuma mendengar, mungkin Sahabat pernah bertemu dengan orang-orang yang memiliki atau penyintas gangguan seperti ini. Hal ini berhubungan dengan kesehatan mental seseorang. Bagaimana mengetahui kesehatan mental seseorang? Dan sebenarnya, perlu kah kita menjaga kesehatan mental kita? Mari simak artikel ini sampai habis.\n\nApa itu Kesehatan Mental? Menurt World Health Organization (WHO), kesehatan mental adalah kondisi sejahtera seseorang. Dimana, individu mampu nyadari kemampuan yang ia miliki. Mengatasi tekanan dan stres dalam kehidupan sehari-hari, bekerja produktif, dan mampu berkontribusi aktif di lingkungan atau komunitasnya. Ada beberapa hal yang mencakup kesehatan mental seperti, kenyamanan emosional, psikologi dan hubungan sosial. Dan itu semua dapat mempengaruhi cara berfikir seseorang, Dan juga mempengaruhi cara mengatasi stress, menjalani hubungan dengan orang lain dan membuat keputusan. Kesehatan mental merupakan hal yang penting mulai dari anak-anak, remaja hingga dewasa.",
+            (widget.article.content).replaceAll("(*)", "\n"),
             style:
                 secondaryColorText.copyWith(color: Colors.black, fontSize: 12),
           ),

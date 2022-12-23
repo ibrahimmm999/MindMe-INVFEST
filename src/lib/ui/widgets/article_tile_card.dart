@@ -16,7 +16,9 @@ class ArticleTileCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailArticlePage(),
+            builder: (context) => DetailArticlePage(
+              article: article,
+            ),
           ),
         );
       },
