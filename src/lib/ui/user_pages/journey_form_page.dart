@@ -164,17 +164,15 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                   SizedBox(height: 20),
                   Text(
                     'Content',
-                    style: TextStyle(
+                    style: secondaryColorText.copyWith(
                       fontSize: 16,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 10),
                   TextFormField(
                     controller: contentController,
                     keyboardType: TextInputType.multiline,
-                    minLines: 6,
+                    minLines: 24,
                     maxLines: null,
                     decoration: InputDecoration(
                         hintText: "Content",
