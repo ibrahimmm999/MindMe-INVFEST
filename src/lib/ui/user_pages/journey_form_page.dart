@@ -3,10 +3,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/change_image_cubit.dart';
 import 'package:src/ui/user_pages/journey_page.dart';
 
 import '../../shared/theme.dart';
-import '../widgets/custom_button.dart';
 
 class JourneyFormPage extends StatefulWidget {
   //constructor have one parameter, optional paramter
@@ -47,8 +48,10 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
 
       //set state to fill data controller from data firebase
       setState(() {
-        titleController = TextEditingController(text: item['title']);
-        contentController = TextEditingController(text: item['content']);
+        titleController = TextEditingController(
+            text: (item['title']).toString().replaceAll("(*)", "\n"));
+        contentController = TextEditingController(
+            text: (item['content']).toString().replaceAll("(*)", "\n"));
       });
     }
   }
@@ -63,6 +66,8 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    String defaultImageUrl =
+        'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b';
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -86,17 +91,24 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
             child: IconButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    DateTime currentTime = DateTime.now();
                     //if id not null run add data to store data into firebase
                     //else update data based on id
                     if (widget.id == null) {
                       users!.add({
-                        'title': titleController.text,
-                        'content': contentController.text,
+                        'title': (titleController.text),
+                        'content':
+                            (contentController.text).replaceAll("\n", "(*)"),
+                        'imageUrl':
+                            'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b',
+                        'date': Timestamp.fromDate(currentTime)
                       });
                     } else {
                       users!.doc(widget.id).update({
                         'title': titleController.text,
-                        'content': contentController.text,
+                        'content':
+                            (contentController.text).replaceAll("\n", "(*)"),
+                        'date': Timestamp.fromDate(currentTime)
                       });
                     }
                     //snackbar notification
@@ -108,7 +120,6 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                         MaterialPageRoute(builder: (context) => JourneyPage()),
                         (route) => false);
                   }
-                  ;
                 },
                 icon: Icon(
                   Icons.check_rounded,
@@ -130,71 +141,73 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
     }
 
     return Scaffold(
-        appBar: header(),
+      appBar: header(),
 
-        //this form for add and edit data
-        //if have id passed from main, field will show data
-        body: Form(
-          key: _formKey,
-          child: ListView(children: [
-            Container(
-              margin: EdgeInsets.only(top: 40, right: 25, left: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Title',
-                      style: secondaryColorText.copyWith(fontSize: 16)),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    controller: titleController,
-                    decoration: InputDecoration(
-                        hintText: "Title",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Title is Required!';
-                      }
-                      return null;
-                    },
+      //this form for add and edit data
+      //if have id passed from main, field will show data
+      body: Form(
+        key: _formKey,
+        child: ListView(children: [
+          Container(
+            margin: EdgeInsets.only(right: 25, left: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Title', style: secondaryColorText.copyWith(fontSize: 16)),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                      hintText: "Title",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Title is Required!';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Content',
+                  style: secondaryColorText.copyWith(
+                    fontSize: 16,
                   ),
-                  SizedBox(height: 20),
-                  Text(
-                    'Content',
-                    style: secondaryColorText.copyWith(
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  TextFormField(
-                    controller: contentController,
-                    keyboardType: TextInputType.multiline,
-                    minLines: 24,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                        hintText: "Content",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        fillColor: Colors.white,
-                        filled: true),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Content is Required!';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            )
-          ]),
-        ));
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: contentController,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 14,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                      hintText: "Content",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      fillColor: Colors.white,
+                      filled: true),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Content is Required!';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+              ],
+            ),
+          )
+        ]),
+      ),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () {}, backgroundColor: tosca),
+    );
   }
 }

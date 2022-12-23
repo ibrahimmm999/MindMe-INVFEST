@@ -49,19 +49,19 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
     }
 
     Widget videoList(List<VideoModel> videos) {
-      return Container(
-          margin: EdgeInsets.only(bottom: 24),
-          padding: EdgeInsets.only(top: 4, left: 4, right: 4),
-          decoration: BoxDecoration(color: white),
-          //height: 269,
-          width: 315,
-          child: Column(
-            children: videos.map((VideoModel video) {
-              return Column(
-                children: [VideoTileCard(video: video)],
+      return ListView(
+          padding: EdgeInsets.only(
+            top: 24,
+            left: defaultMargin,
+            right: defaultMargin,
+          ),
+          children: videos.map(
+            (e) {
+              return VideoTileCard(
+                video: e,
               );
-            }).toList(),
-          ));
+            },
+          ).toList());
     }
 
     return BlocConsumer<VideoCubit, VideoState>(
@@ -77,11 +77,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
         if (state is VideoSuccess) {
           return Scaffold(
             appBar: header(),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [Center(child: videoList(state.videos))],
-              ),
-            ),
+            body: videoList(state.videos),
           );
         } else {
           return Scaffold(
