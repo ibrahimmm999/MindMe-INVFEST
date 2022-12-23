@@ -53,7 +53,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
           margin: EdgeInsets.only(bottom: 24),
           padding: EdgeInsets.only(top: 4, left: 4, right: 4),
           decoration: BoxDecoration(color: white),
-          height: 269,
+          //height: 269,
           width: 315,
           child: Column(
             children: videos.map((VideoModel video) {
