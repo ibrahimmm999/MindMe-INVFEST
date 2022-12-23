@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/models/user_model.dart';
+import 'package:src/services/chat_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_chat.dart';
 
+import '../../models/chat_model.dart';
 import '../widgets/custom_button.dart';
 
 class PsikologDetailPage extends StatelessWidget {
@@ -47,83 +49,119 @@ class PsikologDetailPage extends StatelessWidget {
       return BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           if (state is AuthSuccess) {
-            return CustomButton(
-                radiusButton: 12,
-                buttonColor: secondaryColor,
-                buttonText: 'Consult Now',
-                widthButton: double.infinity,
-                onPressed: () {
-                  if (state.user.isPremium) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailChat(),
-                      ),
-                    );
-                  } else {
-                    return showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.75,
-                          width: double.infinity,
-                          color: white,
-                          padding: EdgeInsets.all(defaultMargin),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/lock-closed.png',
-                                width: 110,
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                'Opss so sorry this features locked',
-                                style: secondaryColorText.copyWith(
-                                  fontWeight: medium,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Text('Please join premium to get this benefits',
-                                  style: greyText),
-                              const SizedBox(height: 20),
-                              CustomButton(
-                                radiusButton: 12,
-                                buttonColor: primaryColor,
-                                buttonText: 'Get Premium',
-                                widthButton: 154,
-                                heightButton: 44,
-                                onPressed: () {
-                                  context.read<AuthCubit>().updateUser(
-                                        UserModel(
-                                          id: state.user.id,
-                                          email: state.user.email,
-                                          name: state.user.name,
-                                          username: state.user.username,
-                                          bookmark_article:
-                                              state.user.bookmark_article,
-                                          bookmark_video:
-                                              state.user.bookmark_video,
-                                          alamat: state.user.alamat,
-                                          openTime: state.user.openTime,
-                                          photoUrl: state.user.photoUrl,
-                                          resume: state.user.resume,
-                                          role: state.user.role,
-                                          isPremium: true,
-                                        ),
-                                      );
-                                  Navigator.pop(context);
-                                },
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    );
+            return StreamBuilder<Object>(
+                stream: ChatService().chatStream(),
+                builder: (context, snapshot) {
+                  final String chatId;
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
                   }
-                },
-                heightButton: 54);
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Expanded(
+                        child: Center(child: CircularProgressIndicator()));
+                  }
+                  if (!snapshot.hasData) {
+                    chatId = '';
+                  } else {
+                    List<ChatModel> chats = ChatService().getChatList(snapshot);
+                    var chatIdfind = chats
+                        .where((element) =>
+                            element.consultanId == consultant.id &&
+                            element.userId == state.user.id)
+                        .toList();
+                    if (chatIdfind.isNotEmpty) {
+                      chatId = chatIdfind.first.chatId;
+                    } else {
+                      chatId = '';
+                    }
+                  }
+                  return CustomButton(
+                      radiusButton: 12,
+                      buttonColor: secondaryColor,
+                      buttonText: 'Consult Now',
+                      widthButton: double.infinity,
+                      onPressed: () {
+                        if (state.user.isPremium) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailChat(
+                                name: consultant.name,
+                                imageUrl: consultant.photoUrl,
+                                consultantId: consultant.id,
+                                chatId: chatId,
+                                userId: state.user.id,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
+                                width: double.infinity,
+                                color: white,
+                                padding: EdgeInsets.all(defaultMargin),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/lock-closed.png',
+                                      width: 110,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      'Opss so sorry this features locked',
+                                      style: secondaryColorText.copyWith(
+                                        fontWeight: medium,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                        'Please join premium to get this benefits',
+                                        style: greyText),
+                                    const SizedBox(height: 20),
+                                    CustomButton(
+                                      radiusButton: 12,
+                                      buttonColor: primaryColor,
+                                      buttonText: 'Get Premium',
+                                      widthButton: 154,
+                                      heightButton: 44,
+                                      onPressed: () {
+                                        context.read<AuthCubit>().updateUser(
+                                              UserModel(
+                                                id: state.user.id,
+                                                email: state.user.email,
+                                                name: state.user.name,
+                                                username: state.user.username,
+                                                bookmark_article:
+                                                    state.user.bookmark_article,
+                                                bookmark_video:
+                                                    state.user.bookmark_video,
+                                                alamat: state.user.alamat,
+                                                openTime: state.user.openTime,
+                                                photoUrl: state.user.photoUrl,
+                                                resume: state.user.resume,
+                                                role: state.user.role,
+                                                isPremium: true,
+                                              ),
+                                            );
+                                        Navigator.pop(context);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                      heightButton: 54);
+                });
           } else {
             return Center(
               child: CircularProgressIndicator(

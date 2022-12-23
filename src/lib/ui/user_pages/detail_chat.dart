@@ -1,13 +1,28 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:src/models/chat_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/chat_bubbles.dart';
 
 class DetailChat extends StatelessWidget {
-  const DetailChat({Key? key}) : super(key: key);
+  const DetailChat(
+      {required this.name,
+      required this.imageUrl,
+      required this.consultantId,
+      this.chatId = '',
+      required this.userId,
+      Key? key})
+      : super(key: key);
+
+  final String consultantId;
+  final String chatId;
+  final String userId;
+  final String imageUrl;
+  final String name;
 
   @override
   Widget build(BuildContext context) {
+    print(chatId);
     PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: primaryColor,
@@ -20,31 +35,28 @@ class DetailChat extends StatelessWidget {
         ),
         title: Row(
           children: [
-            Image.asset(
-              'assets/example/profile_pict_example.png',
-              width: 50,
+            ClipOval(
+              child: imageUrl.isEmpty
+                  ? Image.asset(
+                      'assets/profile_image_default.png',
+                      width: 54,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.network(
+                      imageUrl,
+                      width: 54,
+                      fit: BoxFit.cover,
+                    ),
             ),
             const SizedBox(
               width: 12,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Mr. Budi, S.Psi.',
-                  style: whiteText.copyWith(
-                    fontWeight: medium,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  'Online',
-                  style: greyText.copyWith(
-                    fontWeight: light,
-                    fontSize: 14,
-                  ),
-                )
-              ],
+            Text(
+              name,
+              style: whiteText.copyWith(
+                fontWeight: bold,
+                fontSize: 16,
+              ),
             )
           ],
         ),

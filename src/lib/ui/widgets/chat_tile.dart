@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:src/models/chat_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_chat.dart';
 
@@ -6,13 +7,13 @@ class ChatTile extends StatelessWidget {
   const ChatTile(
       {required this.name,
       required this.imageUrl,
-      this.lastMessage = '',
+      required this.chat,
       Key? key})
       : super(key: key);
 
+  final ChatModel chat;
   final String imageUrl;
   final String name;
-  final String lastMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,13 @@ class ChatTile extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailChat(),
+            builder: (context) => DetailChat(
+              consultantId: chat.consultanId,
+              userId: chat.userId,
+              chatId: chat.chatId,
+              imageUrl: imageUrl,
+              name: name,
+            ),
           ),
         );
       },
@@ -60,7 +67,7 @@ class ChatTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        lastMessage,
+                        chat.lastMessage,
                         style: greyText.copyWith(
                           fontWeight: light,
                         ),

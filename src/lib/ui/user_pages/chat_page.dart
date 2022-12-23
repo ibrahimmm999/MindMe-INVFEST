@@ -113,14 +113,14 @@ class ChatPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                         horizontal: defaultMargin,
                       ),
-                      children: chats.map((e) {
+                      children: chats.map((chat) {
                         UserModel consultan = constultant
-                            .where((element) => element.id == e.consultanId)
+                            .where((element) => element.id == chat.consultanId)
                             .toList()[0];
                         return ChatTile(
                           imageUrl: consultan.photoUrl,
                           name: consultan.name,
-                          lastMessage: e.lastMessage,
+                          chat: chat,
                         );
                       }).toList()),
                 ),
