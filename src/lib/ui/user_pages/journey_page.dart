@@ -8,10 +8,12 @@ import 'package:src/models/journey_model.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_form_page.dart';
 
+import '../../cubit/auth_cubit.dart';
 import '../../shared/theme.dart';
 
 class JourneyPage extends StatefulWidget {
-  const JourneyPage({super.key});
+  final String user_id;
+  const JourneyPage({super.key, required this.user_id});
 
   @override
   State<JourneyPage> createState() => _JourneyPageState();
@@ -25,6 +27,7 @@ class _JourneyPageState extends State<JourneyPage> {
   }
 
   Widget build(BuildContext context) {
+    print(widget.user_id);
     FirebaseFirestore firebase = FirebaseFirestore.instance;
 
     //get collection from firebase, collection is table in mysql
@@ -116,6 +119,7 @@ class _JourneyPageState extends State<JourneyPage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => JourneyFormPage(
+                                  id_user: widget.user_id,
                                   id: id,
                                 )));
                   },
@@ -139,7 +143,14 @@ class _JourneyPageState extends State<JourneyPage> {
           ),
           children: journey.map(
             (e) {
-              return journeyTileCard(e, e.id);
+              // var bool = (widget.user_id).compareTo(e.id_user);
+              // print("id jurnal ${e.id_user}");
+              if (e.id_user.contains(widget.user_id)) {
+                // print('yooo');
+                return journeyTileCard(e, e.id);
+              } else {
+                return SizedBox();
+              }
             },
           ).toList());
     }
@@ -168,7 +179,9 @@ class _JourneyPageState extends State<JourneyPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => JourneyFormPage()));
+                          builder: (context) => JourneyFormPage(
+                                id_user: widget.user_id,
+                              )));
                 }),
           );
         } else {

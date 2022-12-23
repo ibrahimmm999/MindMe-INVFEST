@@ -15,53 +15,49 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget header() {
-      return BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (state is AuthSuccess) {
-            return Container(
-              margin: EdgeInsets.only(
-                top: defaultMargin,
-                right: defaultMargin,
-                left: defaultMargin,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Hey there,\nwelcome back',
-                          style: secondaryColorText.copyWith(
-                            fontWeight: medium,
-                            fontSize: 24,
-                          ),
-                        ),
-                        Text(
-                          state.user.name,
-                          style: primaryColorText.copyWith(
-                            fontWeight: medium,
-                            fontSize: 24,
-                          ),
-                        )
-                      ],
+    Widget header(String name) {
+      if (name.isNotEmpty) {
+        return Container(
+          margin: EdgeInsets.only(
+            top: defaultMargin,
+            right: defaultMargin,
+            left: defaultMargin,
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hey there,\nwelcome back',
+                      style: secondaryColorText.copyWith(
+                        fontWeight: medium,
+                        fontSize: 24,
+                      ),
                     ),
-                  ),
-                  ClipOval(
-                    child: Image.asset(
-                      'assets/profile_image_default.png',
-                      width: 54,
-                    ),
-                  )
-                ],
+                    Text(
+                      name,
+                      style: primaryColorText.copyWith(
+                        fontWeight: medium,
+                        fontSize: 24,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            );
-          } else {
-            return SizedBox();
-          }
-        },
-      );
+              ClipOval(
+                child: Image.asset(
+                  'assets/profile_image_default.png',
+                  width: 54,
+                ),
+              )
+            ],
+          ),
+        );
+      } else {
+        return SizedBox();
+      }
     }
 
     Widget quotes() {
@@ -244,38 +240,57 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    return Scaffold(
-      backgroundColor: white2,
-      body: SafeArea(
-        child: ListView(
-          children: [
-            header(),
-            quotes(),
-            newArticles(),
-            feature(secondaryColor, 'assets/consult_room_icon.png',
-                'Meet Our Professionals', 'Consult Room', () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ConsultRoomPage()));
-            }),
-            feature(tosca, 'assets/journey_icon.png', 'Let\'s Write Your',
-                'Journey', () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => JourneyPage()));
-            }),
-            feature(primaryColor, 'assets/article_icon.png', 'Open Your Mind',
-                'See More Articles', () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => ArticlesPage()));
-            }),
-            feature(red, 'assets/course_video_icon.png', 'Look New Insights',
-                'Take Course Videos', () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => CourseVideosPage()));
-            }),
-            const SizedBox(height: 50)
-          ],
-        ),
-      ),
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        if (state is AuthSuccess) {
+          return Scaffold(
+            backgroundColor: white2,
+            body: SafeArea(
+              child: ListView(
+                children: [
+                  header(state.user.name),
+                  quotes(),
+                  newArticles(),
+                  feature(secondaryColor, 'assets/consult_room_icon.png',
+                      'Meet Our Professionals', 'Consult Room', () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ConsultRoomPage()));
+                  }),
+                  feature(tosca, 'assets/journey_icon.png', 'Let\'s Write Your',
+                      'Journey', () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => JourneyPage(
+                                  user_id: state.user.id,
+                                )));
+                  }),
+                  feature(primaryColor, 'assets/article_icon.png',
+                      'Open Your Mind', 'See More Articles', () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ArticlesPage()));
+                  }),
+                  feature(red, 'assets/course_video_icon.png',
+                      'Look New Insights', 'Take Course Videos', () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CourseVideosPage()));
+                  }),
+                  const SizedBox(height: 50)
+                ],
+              ),
+            ),
+          );
+        } else {
+          print(state);
+          return SizedBox();
+        }
+      },
     );
   }
 }

@@ -22,6 +22,7 @@ class JourneyService {
       return JourneyModel(
           id: id,
           title: snapshot['title'],
+          id_user: snapshot['id_user'],
           content: snapshot['content'],
           date: snapshot['date']);
     } catch (e) {

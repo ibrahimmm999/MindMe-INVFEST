@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/change_image_cubit.dart';
+import 'package:src/models/journey_model.dart';
+import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_page.dart';
 
 import '../../shared/theme.dart';
 
 class JourneyFormPage extends StatefulWidget {
+  final String id_user;
   //constructor have one parameter, optional paramter
   //if have id we will show data and run update method
   //else run add data
-  const JourneyFormPage({this.id});
+  const JourneyFormPage({this.id, required this.id_user});
 
   final String? id;
 
@@ -30,17 +33,17 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
   var contentController = TextEditingController();
 
   FirebaseFirestore firebase = FirebaseFirestore.instance;
-  CollectionReference? users;
+  CollectionReference? journeys;
 
   void getData() async {
-    //get users collection from firebase
+    //get journeys collection from firebase
     //collection is table in mysql
-    users = firebase.collection('journey');
+    journeys = firebase.collection('journey');
 
     //if have id
     if (widget.id != null) {
-      //get users data based on id document
-      var data = await users!.doc(widget.id).get();
+      //get journeys data based on id document
+      var data = await journeys!.doc(widget.id).get();
 
       //we get data.data()
       //so that it can be accessed, we make as a map
@@ -95,20 +98,22 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                     //if id not null run add data to store data into firebase
                     //else update data based on id
                     if (widget.id == null) {
-                      users!.add({
+                      journeys!.add({
                         'title': (titleController.text),
                         'content':
                             (contentController.text).replaceAll("\n", "(*)"),
                         'imageUrl':
                             'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b',
-                        'date': Timestamp.fromDate(currentTime)
+                        'date': Timestamp.fromDate(currentTime),
+                        'id_user': widget.id_user
                       });
                     } else {
-                      users!.doc(widget.id).update({
+                      journeys!.doc(widget.id).update({
                         'title': titleController.text,
                         'content':
                             (contentController.text).replaceAll("\n", "(*)"),
-                        'date': Timestamp.fromDate(currentTime)
+                        'date': Timestamp.fromDate(currentTime),
+                        'id_user': widget.id_user
                       });
                     }
                     //snackbar notification
@@ -117,8 +122,13 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => JourneyPage()),
+                        MaterialPageRoute(
+                            builder: (context) => JourneyPage(
+                                  user_id: widget.id_user,
+                                )),
                         (route) => false);
+                    print(widget.id_user);
+                    print(journeys);
                   }
                 },
                 icon: Icon(
