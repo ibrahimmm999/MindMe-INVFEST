@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:src/models/journey_model.dart';
 
 import '../../shared/theme.dart';
 
 class DetailJourneyPage extends StatelessWidget {
-  const DetailJourneyPage({super.key});
+  final JourneyModel journey;
+  const DetailJourneyPage({super.key, required this.journey});
 
   @override
   Widget build(BuildContext context) {
@@ -17,27 +19,15 @@ class DetailJourneyPage extends StatelessWidget {
             Navigator.pop(context);
           },
           icon: Icon(
-            Icons.clear_rounded,
+            Icons.arrow_back_ios_new_rounded,
             size: 20,
-            color: red,
+            color: secondaryColor,
           ),
           color: secondaryColor,
           iconSize: 16,
         ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 8),
-            child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.check_rounded,
-                  size: 20,
-                  color: tosca,
-                )),
-          )
-        ],
         title: Text(
-          'Articles',
+          'Journey',
           style: secondaryColorText.copyWith(
             fontSize: 18,
             fontWeight: medium,

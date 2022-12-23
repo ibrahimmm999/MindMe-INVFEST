@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class JourneyModel extends Equatable {
@@ -5,13 +6,13 @@ class JourneyModel extends Equatable {
   final String imageUrl;
   final String title;
   final String content;
-  final String date;
+  final Timestamp date;
   JourneyModel({
     required this.id,
     this.title = '',
     this.content = '',
     this.imageUrl = '',
-    this.date = '',
+    required this.date,
   });
 
   factory JourneyModel.fromJson(String id, Map<String, dynamic> json) =>

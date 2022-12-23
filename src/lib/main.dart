@@ -10,6 +10,7 @@ import 'package:src/ui/user_pages/edit_profile_page.dart';
 import 'package:src/ui/user_pages/main_page.dart';
 import 'package:src/ui/user_pages/sign_up_page.dart';
 
+import 'cubit/article_cubit.dart';
 import 'cubit/auth_cubit.dart';
 import 'cubit/journey_cubit.dart';
 import 'cubit/video_cubit.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(create: (context) => ArticleCubit()),
         BlocProvider(create: (context) => JourneyCubit()),
         BlocProvider(create: (context) => PostCubit()),
         BlocProvider(create: (context) => VideoCubit()),

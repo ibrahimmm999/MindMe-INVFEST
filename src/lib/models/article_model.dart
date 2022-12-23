@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,7 @@ class ArticleModel extends Equatable {
   final String title;
   final String thumbnail;
   final String author;
-  final String date;
+  final Timestamp date;
   final String content;
   ArticleModel(
       {this.id = '',
@@ -14,7 +15,7 @@ class ArticleModel extends Equatable {
       this.title = '',
       this.author = '',
       this.content = '',
-      this.date = ""});
+      required this.date});
 
   factory ArticleModel.fromJson(String id, Map<String, dynamic> json) =>
       ArticleModel(
