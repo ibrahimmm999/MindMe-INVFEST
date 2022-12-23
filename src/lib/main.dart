@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/post_cubit.dart';
+import 'package:src/cubit/post_stream_cubit.dart';
 
 import 'package:src/ui/sign_in_page.dart';
 import 'package:src/ui/splash_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => JourneyCubit()),
         BlocProvider(create: (context) => PostCubit()),
         BlocProvider(create: (context) => VideoCubit()),
+        BlocProvider(create: (context) => PostStreamCubit()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

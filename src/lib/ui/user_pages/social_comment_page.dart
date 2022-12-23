@@ -12,10 +12,16 @@ import 'package:src/services/user_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/comment_bubbles.dart';
 
-class SocialCommentPage extends StatelessWidget {
+class SocialCommentPage extends StatefulWidget {
   SocialCommentPage({required this.post, super.key});
 
   final PostModel post;
+
+  @override
+  State<SocialCommentPage> createState() => _SocialCommentPageState();
+}
+
+class _SocialCommentPageState extends State<SocialCommentPage> {
   final TextEditingController commentController =
       TextEditingController(text: '');
 
@@ -64,7 +70,7 @@ class SocialCommentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${post.author} - ${post.date.toString()}',
+              '${widget.post.author} - ${widget.post.date.toString()}',
               style: greyText.copyWith(
                 fontWeight: regular,
                 fontSize: 12,
@@ -74,7 +80,7 @@ class SocialCommentPage extends StatelessWidget {
               height: 4,
             ),
             Text(
-              post.content,
+              widget.post.content,
               style: secondaryColorText.copyWith(
                 fontWeight: light,
                 fontSize: 12,
@@ -86,7 +92,7 @@ class SocialCommentPage extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(defaultRadius),
                 child: Image.network(
-                  post.imageUrl,
+                  widget.post.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -104,7 +110,7 @@ class SocialCommentPage extends StatelessWidget {
                   width: 4,
                 ),
                 Text(
-                  post.comments.length.toString(),
+                  widget.post.comments.length.toString(),
                   style: greyText.copyWith(
                     fontSize: 12,
                   ),
@@ -118,7 +124,7 @@ class SocialCommentPage extends StatelessWidget {
 
     Widget comment() {
       return Column(
-          children: post.comments
+          children: widget.post.comments
               .map((e) => CommentBubble(
                     sender: e.sender,
                     date: e.date.toString(),
@@ -173,10 +179,10 @@ class SocialCommentPage extends StatelessWidget {
                     if (state is AuthSuccess) {
                       return GestureDetector(
                         onTap: () {
-                          post.comments.insert(
+                          widget.post.comments.insert(
                             0,
                             CommentModel(
-                              id: (post.comments.length + 1).toString(),
+                              id: (widget.post.comments.length + 1).toString(),
                               senderId: state.user.id,
                               sender: state.user.name,
                               text: commentController.text,
@@ -185,7 +191,7 @@ class SocialCommentPage extends StatelessWidget {
                               ),
                             ),
                           );
-                          context.read<PostCubit>().addComment(post);
+                          context.read<PostCubit>().addComment(widget.post);
                           commentController.clear();
                           FocusManager.instance.primaryFocus?.unfocus();
                         },

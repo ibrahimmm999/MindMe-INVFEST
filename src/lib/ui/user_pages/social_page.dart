@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/post_cubit.dart';
+import 'package:src/cubit/post_stream_cubit.dart';
+import 'package:src/models/comment_model..dart';
 import 'package:src/models/post_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/social_comment_page.dart';
@@ -13,11 +16,10 @@ class SocialPage extends StatefulWidget {
 }
 
 class _SocialPageState extends State<SocialPage> {
+  final Stream<QuerySnapshot> postStream =
+      FirebaseFirestore.instance.collection('posts').snapshots();
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      context.read<PostCubit>().fetchPosts();
-    });
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -228,21 +230,32 @@ class _SocialPageState extends State<SocialPage> {
     }
 
     Widget content() {
-      return BlocBuilder<PostCubit, PostState>(
-        builder: (context, state) {
-          if (state is PostSuccess) {
+      return StreamBuilder(
+          stream: postStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
+
+            List<PostModel> posts = snapshot.data!.docs.map((e) {
+              return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+            }).toList();
             return ListView(
                 padding: EdgeInsets.only(
                   top: 24,
                   left: defaultMargin,
                   right: defaultMargin,
                 ),
-                children: state.posts.map((post) => postCard(post)).toList());
-          } else {
-            return SizedBox();
-          }
-        },
-      );
+                children: posts.map(
+                  (e) {
+                    return postCard(e);
+                  },
+                ).toList());
+          });
     }
 
     return Scaffold(

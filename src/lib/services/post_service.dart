@@ -12,10 +12,6 @@ class PostService {
   Future<List<PostModel>> fetchPosts() async {
     try {
       QuerySnapshot result = await _postReference.get();
-
-      // Stream<QuerySnapshot<Map<String, dynamic>>> snapshots =
-      //     FirebaseFirestore.instance.collection('posts').snapshots();
-
       List<PostModel> posts = result.docs.map((e) {
         return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
       }).toList();
@@ -61,4 +57,36 @@ class PostService {
       throw e;
     }
   }
+
+  // Future<List<PostModel>> fetchPosts() async {
+  //   try {
+  //     // QuerySnapshot result = await _postReference.get();
+
+  //     // Stream<QuerySnapshot<Map<String, dynamic>>> snapshots =
+  //     //     FirebaseFirestore.instance.collection('posts').snapshots();
+
+  //     List<PostModel> posts = [];
+  //     _postReference.snapshots().listen(
+  //       (event) {
+  //         event.docs.forEach(
+  //           (e) {
+  //             print(e.data() as Map<String, dynamic>);
+  //             // print(PostModel.fromJson(e.id, e.data() as Map<String, dynamic>));
+  //             posts.add(
+  //                 PostModel.fromJson(e.id, e.data() as Map<String, dynamic>));
+  //             PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+  //           },
+  //         );
+  //       },
+  //     );
+
+  //     print(posts);
+  //     // List<PostModel> posts = result.docs.map((e) {
+  //     //   return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+  //     // }).toList();
+  //     return posts;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 }

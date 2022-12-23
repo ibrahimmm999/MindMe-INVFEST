@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/bookmark_page.dart';
 import 'package:src/ui/user_pages/chat_page.dart';
 import 'package:src/ui/user_pages/home_page.dart';
 import 'package:src/ui/user_pages/profile_page.dart';
 import 'package:src/ui/user_pages/social_page.dart';
+
+import '../../cubit/post_stream_cubit.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
