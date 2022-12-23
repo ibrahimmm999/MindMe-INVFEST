@@ -58,12 +58,11 @@ class _JourneyPageState extends State<JourneyPage> {
     Widget journeyTileCard(JourneyModel journey, String id) {
       return GestureDetector(
         onTap: () {
+          // print(journey);
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => DetailJourneyPage(
-                journey: journey,
-              ),
+              builder: (context) => DetailJourneyPage(journey: journey),
             ),
           );
         },

@@ -48,8 +48,10 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
 
       //set state to fill data controller from data firebase
       setState(() {
-        titleController = TextEditingController(text: item['title']);
-        contentController = TextEditingController(text: item['content']);
+        titleController = TextEditingController(
+            text: (item['title']).toString().replaceAll("(*)", "\n"));
+        contentController = TextEditingController(
+            text: (item['content']).toString().replaceAll("(*)", "\n"));
       });
     }
   }
@@ -94,8 +96,9 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                     //else update data based on id
                     if (widget.id == null) {
                       users!.add({
-                        'title': titleController.text,
-                        'content': contentController.text,
+                        'title': (titleController.text),
+                        'content':
+                            (contentController.text).replaceAll("\n", "(*)"),
                         'imageUrl':
                             'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b',
                         'date': Timestamp.fromDate(currentTime)
@@ -103,7 +106,8 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                     } else {
                       users!.doc(widget.id).update({
                         'title': titleController.text,
-                        'content': contentController.text,
+                        'content':
+                            (contentController.text).replaceAll("\n", "(*)"),
                         'date': Timestamp.fromDate(currentTime)
                       });
                     }
