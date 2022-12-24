@@ -48,6 +48,9 @@ class _ArticlesPageState extends State<ArticlesPage> {
     }
 
     Widget articleList(List<ArticleModel> articles) {
+      articles.sort(
+        (b, a) => a.date.compareTo(b.date),
+      );
       return ListView(
           padding: EdgeInsets.only(
             top: 24,

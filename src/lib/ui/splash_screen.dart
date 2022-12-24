@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/video_cubit.dart';
 import 'package:src/shared/theme.dart';
 
+import '../cubit/article_cubit.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/consultant_cubit.dart';
 
@@ -22,7 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () {
       User? currentUser = FirebaseAuth.instance.currentUser;
       context.read<ConsultanCubit>().fetchConsultants();
-
+      context.read<ArticleCubit>().fetchArticles();
+      context.read<VideoCubit>().fetchVideos();
       if (currentUser == null) {
         Navigator.pushNamedAndRemoveUntil(
             context, '/sign-in', (route) => false);

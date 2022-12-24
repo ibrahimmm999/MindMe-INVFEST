@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:src/cubit/article_cubit.dart';
 import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/cubit/consultant_cubit.dart';
+import 'package:src/models/article_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
 import 'package:src/ui/user_pages/consult_room_page.dart';
 import 'package:src/ui/user_pages/course_videos_page.dart';
+import 'package:src/ui/user_pages/detail_article_page.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_page.dart';
 
@@ -98,65 +102,69 @@ class HomePage extends StatelessWidget {
       );
     }
 
-    Widget newArticleCard() {
-      return Container(
-        margin: EdgeInsets.only(
-          right: defaultMargin,
-        ),
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(defaultRadius),
-              child: Container(
-                width: 200,
-                height: 250,
-                color: white,
+    Widget newArticleCard(ArticleModel article) {
+      return GestureDetector(
+        onTap: () => DetailArticlePage(article: article),
+        child: Container(
+          margin: EdgeInsets.only(
+            right: defaultMargin,
+          ),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(defaultRadius),
                 child: Container(
-                  margin: const EdgeInsets.only(top: 130),
-                  color: primaryColor,
+                  width: 200,
+                  height: 250,
+                  color: white,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 130),
+                    color: primaryColor,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(8),
-              width: 200,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(defaultRadius),
-                    child: Image.asset(
-                      'assets/example/article1_example.png',
-                      width: 184,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '09 September 2022',
-                    style: secondaryColorText.copyWith(fontSize: 8),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Yuni Rahmawati',
-                    style: secondaryColorText.copyWith(fontSize: 8),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Kesehatan Mental : Gejala, Faktor dan Penanganan',
-                          style: whiteText.copyWith(
-                              fontWeight: semibold, fontSize: 12),
-                        ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                width: 200,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: Image.network(
+                        article.thumbnail,
+                        width: 184,
+                        fit: BoxFit.cover,
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      (DateFormat('dd MMMM yyyy').format(article.date.toDate()))
+                          .toString(),
+                      style: secondaryColorText.copyWith(fontSize: 8),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      article.author,
+                      style: secondaryColorText.copyWith(fontSize: 8),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            article.title,
+                            style: whiteText.copyWith(
+                                fontWeight: semibold, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
     }
@@ -181,16 +189,24 @@ class HomePage extends StatelessWidget {
           ),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: defaultMargin,
-                ),
-                newArticleCard(),
-                newArticleCard(),
-                newArticleCard(),
-                newArticleCard(),
-              ],
+            child: BlocBuilder<ArticleCubit, ArticleState>(
+              builder: (context, state) {
+                if (state is ArticleSuccess) {
+                  List<ArticleModel> articles = state.articles;
+                  articles.sort(
+                    (b, a) => a.date.compareTo(b.date),
+                  );
+                  articles = articles.getRange(0, 3).toList();
+                  return Container(
+                    margin: EdgeInsets.only(left: defaultMargin),
+                    child: Row(
+                        children:
+                            articles.map((e) => newArticleCard(e)).toList()),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              },
             ),
           ),
         ],
