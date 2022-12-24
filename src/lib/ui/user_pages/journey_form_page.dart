@@ -9,6 +9,7 @@ import 'package:src/models/journey_model.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_page.dart';
 
+import '../../cubit/journey_cubit.dart';
 import '../../shared/theme.dart';
 
 class JourneyFormPage extends StatefulWidget {
@@ -118,13 +119,8 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                     final snackBar =
                         SnackBar(content: Text('Data saved successfully!'));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => JourneyPage(
-                                  user_id: widget.id_user,
-                                )),
-                        (route) => false);
+                    context.read<JourneyCubit>().fetchJourney();
+                    Navigator.pop(context);
                     print(widget.id_user);
                     print(journeys);
                   }

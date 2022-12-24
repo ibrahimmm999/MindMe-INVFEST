@@ -14,6 +14,10 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController fullNameController = TextEditingController(text: '');
+    TextEditingController usernameController = TextEditingController(text: '');
+    TextEditingController emailController = TextEditingController(text: '');
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -38,9 +42,9 @@ class EditProfilePage extends StatelessWidget {
                     context.read<AuthCubit>().updateUser(
                           UserModel(
                             id: state.user.id,
-                            email: state.user.email,
-                            name: state.user.name,
-                            username: state.user.username,
+                            email: emailController.text,
+                            name: fullNameController.text,
+                            username: usernameController.text,
                             bookmark_article: state.user.bookmark_article,
                             bookmark_video: state.user.bookmark_video,
                             alamat: state.user.alamat,
@@ -108,12 +112,9 @@ class EditProfilePage extends StatelessWidget {
     Widget content() {
       return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
         if (state is AuthSuccess) {
-          final TextEditingController fullNameController =
-              TextEditingController(text: state.user.name);
-          final TextEditingController usernameController =
-              TextEditingController(text: state.user.username);
-          final TextEditingController emailController =
-              TextEditingController(text: state.user.email);
+          fullNameController = TextEditingController(text: state.user.name);
+          usernameController = TextEditingController(text: state.user.username);
+          emailController = TextEditingController(text: state.user.email);
           context.read<ChangeImageCubit>().setImage(state.user.photoUrl);
           return Container(
             padding: EdgeInsets.symmetric(horizontal: defaultMargin),
