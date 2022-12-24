@@ -70,7 +70,7 @@ class ChatTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        chat.lastMessage,
+                        chat.lastMessage.replaceAll("\n", " "),
                         style: greyText.copyWith(
                           fontWeight: light,
                         ),
