@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/models/article_model.dart';
+import 'package:src/models/user_model.dart';
 
 import '../../cubit/article_cubit.dart';
 import '../../shared/theme.dart';
@@ -20,6 +22,8 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
     context.read<ArticleCubit>().fetchArticles();
     super.initState();
   }
+
+  bool isBookmarked = false;
 
   Widget build(BuildContext context) {
     PreferredSizeWidget header() {
@@ -83,14 +87,64 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(right: 30, top: 10),
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/love_icon.png"),
-                      fit: BoxFit.cover)),
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is AuthSuccess) {
+                  List<ArticleModel> userBookmark = state.user.bookmark_article;
+                  isBookmarked = userBookmark.contains(widget.article);
+                  return GestureDetector(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 30, top: 10),
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: isBookmarked
+                                  ? AssetImage("assets/love_icon.png")
+                                  : AssetImage("assets/unlove.png"),
+                              fit: BoxFit.cover)),
+                    ),
+                    onTap: () {
+                      if (isBookmarked) {
+                        userBookmark.remove(widget.article);
+                      } else {
+                        userBookmark.add(widget.article);
+                      }
+                      setState(() {
+                        isBookmarked = !isBookmarked;
+                      });
+                      context.read<AuthCubit>().updateUser(
+                            UserModel(
+                              id: state.user.id,
+                              email: state.user.email,
+                              name: state.user.name,
+                              username: state.user.username,
+                              bookmark_article: state.user.bookmark_article,
+                              bookmark_video: state.user.bookmark_video,
+                              alamat: state.user.alamat,
+                              isPremium: state.user.isPremium,
+                              openTime: state.user.openTime,
+                              photoUrl: state.user.photoUrl,
+                              resume: state.user.resume,
+                              role: state.user.role,
+                            ),
+                          );
+                    },
+                  );
+                } else {
+                  return Container(
+                    margin: EdgeInsets.only(right: 30, top: 10),
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: isBookmarked
+                                ? AssetImage("assets/love_icon.png")
+                                : AssetImage("assets/unlove.png"),
+                            fit: BoxFit.cover)),
+                  );
+                }
+              },
             )
           ],
         );

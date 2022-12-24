@@ -53,9 +53,7 @@ class VideoTileCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => DetailVideoPage(
-                            title: video.title,
-                            videoUrl: video.videoUrl,
-                            uploader: video.uploader,
+                            video: video,
                           ),
                         ),
                       );
@@ -106,15 +104,6 @@ class VideoTileCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(right: 30, top: 10),
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/love_icon.png"),
-                        fit: BoxFit.cover)),
-              )
             ],
           )
         ],
