@@ -137,6 +137,9 @@ class _JourneyPageState extends State<JourneyPage> {
     }
 
     Widget journeyList(List<JourneyModel> journey) {
+      journey.sort(
+        (b, a) => a.date.compareTo(b.date),
+      );
       return ListView(
           padding: EdgeInsets.only(
             top: 24,
