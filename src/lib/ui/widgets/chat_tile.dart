@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:src/models/chat_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_chat.dart';
@@ -76,6 +77,11 @@ class ChatTile extends StatelessWidget {
                     ],
                   ),
                 ),
+                Text(
+                  (DateFormat('dd MMMM yyyy').format(chat.date.toDate()))
+                      .toString(),
+                  style: greyText.copyWith(fontSize: 10),
+                )
               ],
             ),
             const SizedBox(

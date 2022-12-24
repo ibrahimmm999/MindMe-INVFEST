@@ -105,6 +105,9 @@ class ChatPage extends StatelessWidget {
               if (chats.isEmpty) {
                 return emptyChat();
               }
+              chats.sort(
+                (b, a) => a.date.compareTo(b.date),
+              );
               return Expanded(
                 child: Container(
                   width: double.infinity,
@@ -117,6 +120,7 @@ class ChatPage extends StatelessWidget {
                         UserModel consultan = constultant
                             .where((element) => element.id == chat.consultantId)
                             .toList()[0];
+
                         return ChatTile(
                           imageUrl: consultan.photoUrl,
                           name: consultan.name,

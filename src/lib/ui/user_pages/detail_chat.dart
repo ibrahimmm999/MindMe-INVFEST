@@ -138,6 +138,7 @@ class DetailChat extends StatelessWidget {
                             consultantId,
                             userId,
                             chatController.text,
+                            Timestamp.now(),
                           );
                         }
                         context

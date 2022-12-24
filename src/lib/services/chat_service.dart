@@ -9,12 +9,17 @@ class ChatService {
       FirebaseFirestore.instance.collection('chat');
 
   Future<void> addChat(
-      String consultantId, String userId, String lastMessage) async {
+    String consultantId,
+    String userId,
+    String lastMessage,
+    Timestamp date,
+  ) async {
     try {
       await _chatReference.doc().set({
         'consultantId': consultantId,
         'userId': userId,
         'lastMessage': lastMessage,
+        'date': date,
       });
     } catch (e) {
       throw e;
@@ -83,7 +88,10 @@ class ChatService {
   Future<void> updateLastMessage(String lastmessage, String chatId) async {
     try {
       DocumentReference docChat = _chatReference.doc(chatId);
-      await docChat.update({'lastMessage': lastmessage});
+      await docChat.update({
+        'lastMessage': lastmessage,
+        'date': Timestamp.now(),
+      });
     } catch (e) {
       throw e;
     }
