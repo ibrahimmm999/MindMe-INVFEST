@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:src/models/post_model.dart';
-
+import 'dart:io';
+import 'package:path/path.dart';
 import '../models/comment_model..dart';
 
 class PostService {
@@ -16,6 +18,14 @@ class PostService {
         return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
       }).toList();
       return posts;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deletePost(String id) async {
+    try {
+      _postReference.doc(id).delete();
     } catch (e) {
       throw e;
     }
@@ -89,4 +99,17 @@ class PostService {
   //     throw e;
   //   }
   // }
+
+  Future<String> uploadImage(File imageFile) async {
+    String fileName = basename(imageFile.path);
+
+    Reference storageReference =
+        FirebaseStorage.instance.ref('image_post').child(fileName);
+
+    await storageReference.putFile(imageFile);
+
+    String url = await storageReference.getDownloadURL();
+
+    return url;
+  }
 }

@@ -1,13 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:src/shared/theme.dart';
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({Key? key, this.isSender = false, this.text = ''})
+  const ChatBubble(
+      {Key? key, this.isSender = false, this.text = '', required this.date})
       : super(key: key);
 
   final String text;
   final bool isSender;
+  final Timestamp date;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +46,28 @@ class ChatBubble extends StatelessWidget {
                       bottomRight: const Radius.circular(12),
                     ),
                   ),
-                  child: Text(
-                    text,
-                    style: whiteText,
+                  child: Column(
+                    crossAxisAlignment: isSender
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateFormat('dd MMMM yyyy')
+                            .format(date.toDate())
+                            .toString(),
+                        style: greyText.copyWith(
+                          fontWeight: medium,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        text,
+                        style: whiteText,
+                      ),
+                    ],
                   ),
                 ),
               )

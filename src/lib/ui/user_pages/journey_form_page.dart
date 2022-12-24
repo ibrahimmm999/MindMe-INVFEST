@@ -1,11 +1,16 @@
 // ignore_for_file: unnecessary_new, unused_field, prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_local_variable, unused_import, use_key_in_widget_constructors, avoid_print, unused_element
 
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:src/cubit/change_image_cubit.dart';
 import 'package:src/models/journey_model.dart';
+import 'package:src/services/journey_service.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_page.dart';
 
@@ -72,6 +77,8 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
   Widget build(BuildContext context) {
     String defaultImageUrl =
         'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b';
+
+    context.read<ChangeImageCubit>().setImage('');
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -101,8 +108,7 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                         'title': (titleController.text),
                         'content':
                             (contentController.text).replaceAll("\n", "(*)"),
-                        'imageUrl':
-                            'https://firebasestorage.googleapis.com/v0/b/mindme-5a2a8.appspot.com/o/image_comment%2Farticle1_example.png?alt=media&token=e44aafdb-a067-4c21-9833-e837757b029b',
+                        'imageUrl': context.read<ChangeImageCubit>().state,
                         'date': Timestamp.fromDate(currentTime),
                         'id_user': widget.id_user
                       });
@@ -111,6 +117,7 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                         'title': titleController.text,
                         'content':
                             (contentController.text).replaceAll("\n", "(*)"),
+                        'imageUrl': context.read<ChangeImageCubit>().state,
                         'date': Timestamp.fromDate(currentTime),
                         'id_user': widget.id_user
                       });
@@ -154,6 +161,42 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                BlocBuilder<ChangeImageCubit, String>(
+                    builder: (context, state) {
+                  if (state.isEmpty) {
+                    return SizedBox();
+                  } else {
+                    return Container(
+                      margin: EdgeInsets.all(16),
+                      width: double.infinity,
+                      color: white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Image.network(
+                            state,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.all(4),
+                              child: Icon(
+                                Icons.delete,
+                                size: 24,
+                                color: red,
+                              ),
+                            ),
+                            onTap: () {
+                              var url = context.read<ChangeImageCubit>().state;
+                              FirebaseStorage.instance.refFromURL(url).delete();
+                              context.read<ChangeImageCubit>().setImage('');
+                            },
+                          )
+                        ],
+                      ),
+                    );
+                  }
+                }),
                 Text('Title', style: secondaryColorText.copyWith(fontSize: 16)),
                 SizedBox(height: 10),
                 TextFormField(
@@ -207,8 +250,24 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
           )
         ]),
       ),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () {}, backgroundColor: tosca),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final file =
+              await ImagePicker().pickImage(source: ImageSource.gallery);
+          if (file != null) {
+            File filetemp = File(file.path);
+            String imagePath = await JourneyService().uploadImage(filetemp);
+            // ignore: use_build_context_synchronously
+            context.read<ChangeImageCubit>().setImage(imagePath);
+          } else {}
+        },
+        backgroundColor: tosca,
+        child: Icon(
+          Icons.image,
+          size: 24,
+          color: white,
+        ),
+      ),
     );
   }
 }

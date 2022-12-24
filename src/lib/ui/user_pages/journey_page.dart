@@ -77,18 +77,20 @@ class _JourneyPageState extends State<JourneyPage> {
               color: white, borderRadius: BorderRadius.circular(12)),
           child: Row(
             children: [
-              Container(
-                height: 102,
-                width: 102,
-                margin: const EdgeInsets.only(right: 8),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                        image: NetworkImage(journey.imageUrl),
-                        fit: BoxFit.cover)),
-              ),
+              journey.imageUrl.isEmpty
+                  ? SizedBox()
+                  : Container(
+                      height: 102,
+                      width: 102,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          image: DecorationImage(
+                              image: NetworkImage(journey.imageUrl),
+                              fit: BoxFit.cover)),
+                    ),
               Expanded(
                 child: Container(
+                  margin: EdgeInsets.all(24),
                   width: 193,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

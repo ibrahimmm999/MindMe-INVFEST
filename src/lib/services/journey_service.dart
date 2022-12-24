@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../models/journey_model.dart';
+import 'dart:io';
+import 'package:path/path.dart';
 
 class JourneyService {
   CollectionReference _journeysReference =
@@ -28,5 +31,18 @@ class JourneyService {
     } catch (e) {
       throw e;
     }
+  }
+
+  Future<String> uploadImage(File imageFile) async {
+    String fileName = basename(imageFile.path);
+
+    Reference storageReference =
+        FirebaseStorage.instance.ref('image_journey').child(fileName);
+
+    await storageReference.putFile(imageFile);
+
+    String url = await storageReference.getDownloadURL();
+
+    return url;
   }
 }

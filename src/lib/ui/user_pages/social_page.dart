@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,7 @@ import 'package:src/cubit/post_cubit.dart';
 import 'package:src/cubit/post_stream_cubit.dart';
 import 'package:src/models/comment_model..dart';
 import 'package:src/models/post_model.dart';
+import 'package:src/services/post_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/social_comment_page.dart';
 
@@ -76,17 +78,19 @@ class SocialPage extends StatelessWidget {
                 fontSize: 12,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.network(
-                  post.imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            post.imageUrl.isEmpty
+                ? SizedBox()
+                : Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: Image.network(
+                        post.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
             const SizedBox(
               height: 4,
             ),
@@ -103,7 +107,7 @@ class SocialPage extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/comment_icon.png',
-                    width: 16,
+                    width: 24,
                   ),
                   const SizedBox(
                     width: 4,
@@ -122,7 +126,7 @@ class SocialPage extends StatelessWidget {
       );
     }
 
-    Widget postCardSend() {
+    Widget postCardSend(PostModel post) {
       return GestureDetector(
         onLongPress: () {
           showDialog(
@@ -146,6 +150,7 @@ class SocialPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
+                      PostService().deletePost(post.id);
                       Navigator.of(context).pop(true);
                     },
                     child: Text(
@@ -172,7 +177,7 @@ class SocialPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'You - 1 menit',
+                'You - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
                 style: greyText.copyWith(
                   fontWeight: medium,
                   fontSize: 12,
@@ -182,42 +187,59 @@ class SocialPage extends StatelessWidget {
                 height: 4,
               ),
               Text(
-                'kalo cape fisik, istirahat itu udah menjadi obat. tapi kalo yg cape pikiran, istirahat aja rasanya masih cape. kesehatan mental itu penting dan mahal harganya, please sayangi dirimu, jangan terus-menerus nyalahin diri sendiri atas apa yg udah terjadi dan yg ga sesuai ekspektasi',
+                post.content,
                 style: secondaryColorText.copyWith(
                   fontWeight: light,
                   fontSize: 12,
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 4),
-                width: double.infinity,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(defaultRadius),
-                  child: Image.asset(
-                    'assets/example/article1_example.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+              post.imageUrl.isEmpty
+                  ? SizedBox()
+                  : Container(
+                      margin: const EdgeInsets.only(top: 4),
+                      width: double.infinity,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(defaultRadius),
+                        child: Image.network(
+                          post.imageUrl,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
               const SizedBox(
                 height: 4,
               ),
-              Row(
-                children: [
-                  Image.asset(
-                    'assets/comment_icon.png',
-                    width: 16,
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    '10',
-                    style: greyText.copyWith(
-                      fontSize: 12,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SocialCommentPage(post: post),
                     ),
-                  ),
-                ],
+                  );
+                },
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/comment_icon.png',
+                      width: 24,
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      post.comments.length.toString(),
+                      style: greyText.copyWith(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Hold to delete',
+                style: disableText.copyWith(fontSize: 10),
               ),
             ],
           ),
@@ -234,12 +256,16 @@ class SocialPage extends StatelessWidget {
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
+              return SizedBox();
             }
 
             List<PostModel> posts = snapshot.data!.docs.map((e) {
               return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
             }).toList();
+
+            posts.sort(
+              (b, a) => a.date.compareTo(b.date),
+            );
             return ListView(
                 padding: EdgeInsets.only(
                   top: 24,
@@ -248,7 +274,11 @@ class SocialPage extends StatelessWidget {
                 ),
                 children: posts.map(
                   (e) {
-                    return postCard(e);
+                    if (e.authorId == FirebaseAuth.instance.currentUser!.uid) {
+                      return postCardSend(e);
+                    } else {
+                      return postCard(e);
+                    }
                   },
                 ).toList());
           });

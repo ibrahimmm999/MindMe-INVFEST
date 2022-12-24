@@ -173,6 +173,7 @@ class DetailChat extends StatelessWidget {
             return Column(
               children: messages
                   .map((message) => ChatBubble(
+                        date: message.date,
                         text: message.text,
                         isSender: message.senderId == userId,
                       ))

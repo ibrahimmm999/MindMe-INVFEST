@@ -4,6 +4,7 @@ import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/bookmark_page.dart';
 import 'package:src/ui/user_pages/chat_page.dart';
 import 'package:src/ui/user_pages/home_page.dart';
+import 'package:src/ui/user_pages/post_social_page.dart';
 import 'package:src/ui/user_pages/profile_page.dart';
 import 'package:src/ui/user_pages/social_page.dart';
 
@@ -24,6 +25,12 @@ class _MainPageState extends State<MainPage> {
       return FloatingActionButton(
         onPressed: () {
           if (currentIndex == 4) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PostSocialPage(),
+              ),
+            );
           } else {
             setState(() {
               currentIndex = 4;

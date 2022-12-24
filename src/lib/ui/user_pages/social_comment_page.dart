@@ -69,7 +69,9 @@ class SocialCommentPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
+              post.authorId == FirebaseAuth.instance.currentUser!.uid
+                  ? 'You - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}'
+                  : '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
               style: greyText.copyWith(
                 fontWeight: regular,
                 fontSize: 12,
@@ -85,17 +87,19 @@ class SocialCommentPage extends StatelessWidget {
                 fontSize: 12,
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(top: 4),
-              width: double.infinity,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.network(
-                  post.imageUrl,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            post.imageUrl.isEmpty
+                ? SizedBox()
+                : Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(defaultRadius),
+                      child: Image.network(
+                        post.imageUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
             const SizedBox(
               height: 4,
             ),
