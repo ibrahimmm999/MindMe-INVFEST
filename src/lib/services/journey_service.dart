@@ -20,10 +20,11 @@ class JourneyService {
     try {
       DocumentSnapshot snapshot = await _journeysReference.doc(id).get();
       return JourneyModel(
-        id: id,
-        title: snapshot['title'],
-        content: snapshot['content'],
-      );
+          id: id,
+          title: snapshot['title'],
+          id_user: snapshot['id_user'],
+          content: snapshot['content'],
+          date: snapshot['date']);
     } catch (e) {
       throw e;
     }

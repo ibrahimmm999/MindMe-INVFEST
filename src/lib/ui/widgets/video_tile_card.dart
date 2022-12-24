@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:src/models/video_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_video_page.dart';
+import 'package:intl/intl.dart';
 
 class VideoTileCard extends StatelessWidget {
-  const VideoTileCard({super.key});
+  const VideoTileCard({required this.video, super.key});
+
+  final VideoModel video;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +24,10 @@ class VideoTileCard extends StatelessWidget {
 
     return Container(
       margin: EdgeInsets.only(bottom: 24),
-      padding: EdgeInsets.only(top: 4, left: 4, right: 4),
-      decoration: BoxDecoration(color: white),
-      height: 269,
+      padding: EdgeInsets.only(top: 4, left: 4, right: 4, bottom: 8),
+      decoration: BoxDecoration(
+          color: white, borderRadius: BorderRadius.circular(defaultRadius)),
+      //height: 240,
       width: 315,
       child: Column(
         children: [
@@ -35,8 +40,7 @@ class VideoTileCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     image: DecorationImage(
-                        image:
-                            AssetImage("assets/example/article1_example.png"),
+                        image: NetworkImage(video.thumbnail),
                         fit: BoxFit.cover)),
               ),
               customShadow(),
@@ -48,7 +52,11 @@ class VideoTileCard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailVideoPage(),
+                          builder: (context) => DetailVideoPage(
+                            title: video.title,
+                            videoUrl: video.videoUrl,
+                            uploader: video.uploader,
+                          ),
                         ),
                       );
                     },
@@ -74,7 +82,7 @@ class VideoTileCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Kesehatan Mental : Gejala, Faktor dan Penanganan",
+                        video.title,
                         overflow: TextOverflow.clip,
                         style: primaryColorText.copyWith(
                             fontSize: 12, fontWeight: FontWeight.w600),
@@ -83,14 +91,15 @@ class VideoTileCard extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        "19 september 2022",
+                        (DateFormat('dd MMMM yyyy').format(video.date.toDate()))
+                            .toString(),
                         style: secondaryColorText.copyWith(fontSize: 8),
                       ),
                       SizedBox(
                         height: 4,
                       ),
                       Text(
-                        "Yuni Rahmawati",
+                        video.uploader,
                         style: greyText.copyWith(fontSize: 8),
                       )
                     ],

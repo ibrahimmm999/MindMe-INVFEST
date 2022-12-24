@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:src/models/article_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_article_page.dart';
+import 'package:intl/intl.dart';
 
 class ArticleTileCard extends StatelessWidget {
-  const ArticleTileCard({super.key});
+  const ArticleTileCard({required this.article, super.key});
+
+  final ArticleModel article;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +16,9 @@ class ArticleTileCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => DetailArticlePage(),
+            builder: (context) => DetailArticlePage(
+              article: article,
+            ),
           ),
         );
       },
@@ -32,7 +38,7 @@ class ArticleTileCard extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   image: DecorationImage(
-                      image: AssetImage("assets/example/article1_example.png"),
+                      image: NetworkImage(article.thumbnail),
                       fit: BoxFit.cover)),
             ),
             Expanded(
@@ -43,7 +49,7 @@ class ArticleTileCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Kesehatan Mental : Gejala, Faktor dan Penanganan",
+                      article.title,
                       style: primaryColorText.copyWith(
                           fontSize: 13, fontWeight: FontWeight.w600),
                       overflow: TextOverflow.clip,
@@ -52,14 +58,15 @@ class ArticleTileCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      "19 september 2022",
+                      (DateFormat('dd MMMM yyyy').format(article.date.toDate()))
+                          .toString(),
                       style: secondaryColorText.copyWith(fontSize: 8),
                     ),
                     const SizedBox(
                       height: 4,
                     ),
                     Text(
-                      "Yuni Rahmawati",
+                      article.author,
                       style: greyText.copyWith(fontSize: 8),
                     )
                   ],

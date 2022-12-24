@@ -1,13 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:src/cubit/journey_cubit.dart';
+import 'package:src/models/article_model.dart';
+import 'package:src/models/journey_model.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
+import 'package:src/ui/user_pages/journey_form_page.dart';
 
+import '../../cubit/auth_cubit.dart';
 import '../../shared/theme.dart';
 
-class JourneyPage extends StatelessWidget {
-  const JourneyPage({super.key});
+class JourneyPage extends StatefulWidget {
+  final String user_id;
+  const JourneyPage({super.key, required this.user_id});
 
   @override
+  State<JourneyPage> createState() => _JourneyPageState();
+}
+
+class _JourneyPageState extends State<JourneyPage> {
+  @override
+  void initState() {
+    context.read<JourneyCubit>().fetchJourney();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
+    print(widget.user_id);
+    FirebaseFirestore firebase = FirebaseFirestore.instance;
+
+    //get collection from firebase, collection is table in mysql
+    CollectionReference journey = firebase.collection('journey');
+
     PreferredSizeWidget header() {
       return AppBar(
         toolbarHeight: 70,
@@ -33,98 +58,140 @@ class JourneyPage extends StatelessWidget {
       );
     }
 
-    Widget content() {
-      Widget articleTile() {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DetailJourneyPage()));
-          },
-          child: Container(
-            padding: EdgeInsets.all(4),
-            width: 315,
-            height: 110,
-            margin: EdgeInsets.only(bottom: 24),
-            decoration: BoxDecoration(
-                color: white, borderRadius: BorderRadius.circular(12)),
-            child: Row(
-              children: [
-                Container(
-                  height: 102,
-                  width: 102,
-                  margin: EdgeInsets.only(right: 8),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                          image:
-                              AssetImage("assets/example/article1_example.png"),
-                          fit: BoxFit.cover)),
-                ),
-                Expanded(
-                  child: Container(
-                    width: 193,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Kesehatan Mental : Gejala, Faktor dan Penanganan",
-                          style: primaryColorText.copyWith(
-                              fontSize: 13, fontWeight: FontWeight.w600),
-                          overflow: TextOverflow.clip,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "19 september 2022",
-                          style: secondaryColorText.copyWith(fontSize: 8),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          "Yuni Rahmawati",
-                          style: greyText.copyWith(fontSize: 8),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+    Widget journeyTileCard(JourneyModel journey, String id) {
+      return GestureDetector(
+        onTap: () {
+          // print(journey);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DetailJourneyPage(journey: journey),
             ),
-          ),
-        );
-      }
-
-      return Expanded(
+          );
+        },
         child: Container(
-          padding: EdgeInsets.only(
-              right: defaultMargin, left: defaultMargin, top: defaultMargin),
-          color: white2,
-          child: ListView(
-            children: [articleTile(), articleTile()],
+          // padding: const EdgeInsets.all(4),
+          width: 315,
+          margin: const EdgeInsets.only(bottom: 10),
+          decoration: BoxDecoration(
+              color: white, borderRadius: BorderRadius.circular(12)),
+          child: Row(
+            children: [
+              Container(
+                height: 102,
+                width: 102,
+                margin: const EdgeInsets.only(right: 8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    image: DecorationImage(
+                        image: NetworkImage(journey.imageUrl),
+                        fit: BoxFit.cover)),
+              ),
+              Expanded(
+                child: Container(
+                  width: 193,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        journey.title,
+                        style: primaryColorText.copyWith(
+                            fontSize: 13, fontWeight: FontWeight.w600),
+                        overflow: TextOverflow.clip,
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        (DateFormat('dd MMMM yyyy')
+                                .format(journey.date.toDate()))
+                            .toString(),
+                        style: secondaryColorText.copyWith(fontSize: 8),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => JourneyFormPage(
+                                  id_user: widget.user_id,
+                                  id: id,
+                                )));
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    size: 16,
+                    color: grey,
+                  ))
+            ],
           ),
         ),
       );
     }
 
-    return Scaffold(
-      appBar: header(),
-      body: Column(
-        children: [content()],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: tosca,
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => DetailJourneyPage()));
-        },
-        child: Icon(
-          Icons.add_rounded,
-          size: 32,
-        ),
-      ),
+    Widget journeyList(List<JourneyModel> journey) {
+      return ListView(
+          padding: EdgeInsets.only(
+            top: 24,
+            left: defaultMargin,
+            right: defaultMargin,
+          ),
+          children: journey.map(
+            (e) {
+              // var bool = (widget.user_id).compareTo(e.id_user);
+              // print("id jurnal ${e.id_user}");
+              if (e.id_user.contains(widget.user_id)) {
+                // print('yooo');
+                return journeyTileCard(e, e.id);
+              } else {
+                return SizedBox();
+              }
+            },
+          ).toList());
+    }
+
+    return BlocConsumer<JourneyCubit, JourneyState>(
+      listener: (context, state) {
+        if (state is JourneyFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(state.error),
+            backgroundColor: red,
+          ));
+        }
+      },
+      builder: (context, state) {
+        if (state is JourneySuccess) {
+          return Scaffold(
+            appBar: header(),
+            body: journeyList(state.journey),
+            floatingActionButton: FloatingActionButton(
+                child: Icon(
+                  Icons.add_rounded,
+                  size: 40,
+                ),
+                backgroundColor: tosca,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => JourneyFormPage(
+                                id_user: widget.user_id,
+                              )));
+                }),
+          );
+        } else {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/custom_button.dart';
 
@@ -103,7 +105,7 @@ class ProfilePage extends StatelessWidget {
               GestureDetector(
                   onTap: () => Navigator.pushNamed(context, '/edit-profile'),
                   child: menuItem('Edit Profile')),
-              menuItem('Your Orders'),
+              menuItem('Transaction'),
               menuItem('Help'),
               const SizedBox(
                 height: 30,
@@ -121,15 +123,35 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(
                 height: 40,
               ),
-              CustomButton(
-                radiusButton: 12,
-                buttonColor: red,
-                buttonText: 'Sign Out',
-                widthButton: double.infinity,
-                heightButton: 50,
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/sign-in', (route) => false);
+              BlocConsumer<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state is AuthFailed) {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(state.error),
+                      backgroundColor: red,
+                    ));
+                  } else if (state is AuthInitial) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/sign-in', (route) => false);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AuthLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return CustomButton(
+                    radiusButton: 12,
+                    buttonColor: red,
+                    buttonText: 'Sign Out',
+                    widthButton: double.infinity,
+                    heightButton: 50,
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/sign-in', (route) => false);
+                    },
+                  );
                 },
               ),
             ],

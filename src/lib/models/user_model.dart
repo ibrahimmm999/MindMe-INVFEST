@@ -10,6 +10,9 @@ class UserModel extends Equatable {
   final String username;
   final bool isPremium;
   final String photoUrl;
+  final String alamat;
+  final String resume;
+  final String openTime;
   final List<ArticleModel> bookmark_article;
   final List<VideoModel> bookmark_video;
 
@@ -19,6 +22,9 @@ class UserModel extends Equatable {
       required this.email,
       required this.name,
       required this.username,
+      this.alamat = '',
+      this.resume = '',
+      this.openTime = '',
       this.isPremium = false,
       this.photoUrl = '',
       required this.bookmark_article,
@@ -30,6 +36,9 @@ class UserModel extends Equatable {
         email,
         name,
         username,
+        openTime,
+        resume,
+        alamat,
         isPremium,
         photoUrl,
         role,

@@ -1,10 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:src/cubit/post_cubit.dart';
+import 'package:src/cubit/post_stream_cubit.dart';
+import 'package:src/models/comment_model..dart';
+import 'package:src/models/post_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/social_comment_page.dart';
 
 class SocialPage extends StatelessWidget {
-  const SocialPage({super.key});
+  SocialPage({super.key});
 
+  final Stream<QuerySnapshot> postStream =
+      FirebaseFirestore.instance.collection('posts').snapshots();
   @override
   Widget build(BuildContext context) {
     PreferredSizeWidget header() {
@@ -36,7 +45,7 @@ class SocialPage extends StatelessWidget {
       );
     }
 
-    Widget postCard() {
+    Widget postCard(PostModel post) {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         margin: const EdgeInsets.only(bottom: 24),
@@ -51,7 +60,7 @@ class SocialPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'user123 - 1 menit',
+              '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
               style: greyText.copyWith(
                 fontWeight: medium,
                 fontSize: 12,
@@ -61,7 +70,7 @@ class SocialPage extends StatelessWidget {
               height: 4,
             ),
             Text(
-              'kalo cape fisik, istirahat itu udah menjadi obat. tapi kalo yg cape pikiran, istirahat aja rasanya masih cape. kesehatan mental itu penting dan mahal harganya, please sayangi dirimu, jangan terus-menerus nyalahin diri sendiri atas apa yg udah terjadi dan yg ga sesuai ekspektasi',
+              post.content,
               style: secondaryColorText.copyWith(
                 fontWeight: light,
                 fontSize: 12,
@@ -72,8 +81,8 @@ class SocialPage extends StatelessWidget {
               width: double.infinity,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(defaultRadius),
-                child: Image.asset(
-                  'assets/example/article1_example.png',
+                child: Image.network(
+                  post.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -86,7 +95,7 @@ class SocialPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SocialCommentPage(),
+                    builder: (context) => SocialCommentPage(post: post),
                   ),
                 );
               },
@@ -100,7 +109,7 @@ class SocialPage extends StatelessWidget {
                     width: 4,
                   ),
                   Text(
-                    '10',
+                    post.comments.length.toString(),
                     style: greyText.copyWith(
                       fontSize: 12,
                     ),
@@ -217,17 +226,32 @@ class SocialPage extends StatelessWidget {
     }
 
     Widget content() {
-      return ListView(
-        padding: EdgeInsets.only(
-          top: 24,
-          left: defaultMargin,
-          right: defaultMargin,
-        ),
-        children: [
-          postCard(),
-          postCardSend(),
-        ],
-      );
+      return StreamBuilder(
+          stream: postStream,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
+
+            List<PostModel> posts = snapshot.data!.docs.map((e) {
+              return PostModel.fromJson(e.id, e.data() as Map<String, dynamic>);
+            }).toList();
+            return ListView(
+                padding: EdgeInsets.only(
+                  top: 24,
+                  left: defaultMargin,
+                  right: defaultMargin,
+                ),
+                children: posts.map(
+                  (e) {
+                    return postCard(e);
+                  },
+                ).toList());
+          });
     }
 
     return Scaffold(

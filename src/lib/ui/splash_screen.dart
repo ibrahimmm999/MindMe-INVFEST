@@ -1,7 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/shared/theme.dart';
+
+import '../cubit/auth_cubit.dart';
+import '../cubit/consultant_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,7 +20,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamedAndRemoveUntil(context, '/sign-in', (route) => false);
+      User? currentUser = FirebaseAuth.instance.currentUser;
+      context.read<ConsultanCubit>().fetchConsultants();
+
+      if (currentUser == null) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/sign-in', (route) => false);
+      } else {
+        context.read<AuthCubit>().getCurrentUser(currentUser.uid);
+        Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+      }
     });
     super.initState();
   }

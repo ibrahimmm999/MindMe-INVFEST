@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/consultant_cubit.dart';
+import 'package:src/models/user_model.dart';
 import 'package:src/ui/user_pages/psikolog_detail_page.dart';
+import 'package:src/ui/widgets/custom_button.dart';
 
 import '../../shared/theme.dart';
 
@@ -34,11 +38,15 @@ class ConsultRoomPage extends StatelessWidget {
     }
 
     Widget content() {
-      Widget articleTile() {
+      Widget consultantTile(UserModel consultant) {
         return GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PsikologDetailPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => PsikologDetailPage(
+                          consultant: consultant,
+                        )));
           },
           child: Container(
             padding: EdgeInsets.all(4),
@@ -54,11 +62,16 @@ class ConsultRoomPage extends StatelessWidget {
                   width: 102,
                   margin: EdgeInsets.only(right: 8),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: DecorationImage(
-                          image: AssetImage(
-                              "assets/example/profile_pict_example.png"),
-                          fit: BoxFit.cover)),
+                    borderRadius: BorderRadius.circular(12),
+                    image: consultant.photoUrl.isEmpty
+                        ? const DecorationImage(
+                            image: AssetImage(
+                                "assets/profile_image_default_kotak.png"),
+                            fit: BoxFit.cover)
+                        : DecorationImage(
+                            image: NetworkImage(consultant.photoUrl),
+                            fit: BoxFit.cover),
+                  ),
                 ),
                 SizedBox(
                   width: 8,
@@ -71,7 +84,7 @@ class ConsultRoomPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Mr. Budi, S.Psi.",
+                          consultant.name,
                           style: secondaryColorText.copyWith(
                               fontSize: 16, fontWeight: FontWeight.w600),
                           overflow: TextOverflow.clip,
@@ -90,7 +103,7 @@ class ConsultRoomPage extends StatelessWidget {
                               width: 7,
                             ),
                             Text(
-                              "Bandung",
+                              consultant.alamat,
                               style: secondaryColorText.copyWith(fontSize: 12),
                             ),
                           ],
@@ -99,7 +112,7 @@ class ConsultRoomPage extends StatelessWidget {
                           height: 4,
                         ),
                         Text(
-                          "Open 24 Jam",
+                          consultant.openTime,
                           style: toscaText.copyWith(fontSize: 12),
                         )
                       ],
@@ -112,23 +125,42 @@ class ConsultRoomPage extends StatelessWidget {
         );
       }
 
-      return Expanded(
-        child: Container(
-          padding: EdgeInsets.only(
-              right: defaultMargin, left: defaultMargin, top: defaultMargin),
-          color: white2,
-          child: ListView(
-            children: [articleTile(), articleTile()],
-          ),
-        ),
+      return BlocBuilder<ConsultanCubit, ConsultantState>(
+        builder: (context, state) {
+          if (state is ConsultantLoading) {
+            return Center(
+              child: CircularProgressIndicator(color: secondaryColor),
+            );
+          } else if (state is ConsultantSuccess) {
+            if (state.consultants.isEmpty) {
+              return Center(
+                child: Text(
+                  'Kamu Belum Memiliki Transaksi',
+                  style: secondaryColorText.copyWith(
+                      fontSize: 16, fontWeight: semibold),
+                ),
+              );
+            } else {
+              return ListView(
+                padding: EdgeInsets.only(
+                    right: defaultMargin,
+                    left: defaultMargin,
+                    top: defaultMargin),
+                children:
+                    state.consultants.map((e) => consultantTile(e)).toList(),
+              );
+            }
+          } else {
+            return const Center(child: Text('FOUND SOME ERRORS!'));
+          }
+        },
       );
     }
 
     return Scaffold(
       appBar: header(),
-      body: Column(
-        children: [content()],
-      ),
+      backgroundColor: white2,
+      body: content(),
     );
   }
 }
