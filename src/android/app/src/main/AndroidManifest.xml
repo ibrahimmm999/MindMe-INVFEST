@@ -2,7 +2,7 @@
     package="com.example.src">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
    <application
-        android:label="src"
+        android:label="MindMe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
