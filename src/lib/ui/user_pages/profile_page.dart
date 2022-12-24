@@ -10,51 +10,69 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget header() {
-      return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: primaryColor,
-        flexibleSpace: SafeArea(
-          child: Container(
-            padding: EdgeInsets.all(
-              defaultMargin,
-            ),
-            child: Row(
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    'assets/example/profile_pict_example.png',
-                    width: 64,
-                    fit: BoxFit.cover,
+      return BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthSuccess) {
+            return AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              backgroundColor: primaryColor,
+              flexibleSpace: SafeArea(
+                child: Container(
+                  padding: EdgeInsets.all(
+                    defaultMargin,
                   ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(
-                        'Hallo, Budiman',
-                        style: whiteText.copyWith(
-                          fontSize: 24,
-                          fontWeight: semibold,
+                      Container(
+                        width: 64,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: state.user.photoUrl.isEmpty
+                              ? const DecorationImage(
+                                  image: AssetImage(
+                                      'assets/profile_image_default.png'),
+                                  fit: BoxFit.cover,
+                                )
+                              : DecorationImage(
+                                  image: NetworkImage(state.user.photoUrl),
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                       ),
-                      Text(
-                        '@alexkeinn',
-                        style: greyText.copyWith(
-                          fontSize: 16,
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              state.user.name,
+                              style: whiteText.copyWith(
+                                fontSize: 24,
+                                fontWeight: semibold,
+                              ),
+                            ),
+                            Text(
+                              state.user.username,
+                              style: greyText.copyWith(
+                                fontSize: 16,
+                              ),
+                            )
+                          ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
+            );
+          } else {
+            return SizedBox();
+          }
+        },
       );
     }
 

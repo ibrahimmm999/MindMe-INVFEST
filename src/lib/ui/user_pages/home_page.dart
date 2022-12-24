@@ -15,49 +15,55 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget header(String name) {
-      if (name.isNotEmpty) {
-        return Container(
-          margin: EdgeInsets.only(
-            top: defaultMargin,
-            right: defaultMargin,
-            left: defaultMargin,
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Hey there,\nwelcome back',
-                      style: secondaryColorText.copyWith(
-                        fontWeight: medium,
-                        fontSize: 24,
-                      ),
+    Widget header(String name, String photoUrl) {
+      return Container(
+        margin: EdgeInsets.only(
+          top: defaultMargin,
+          right: defaultMargin,
+          left: defaultMargin,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hey there,\nwelcome back',
+                    style: secondaryColorText.copyWith(
+                      fontWeight: medium,
+                      fontSize: 24,
                     ),
-                    Text(
-                      name,
-                      style: primaryColorText.copyWith(
-                        fontWeight: medium,
-                        fontSize: 24,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Text(
+                    name,
+                    style: primaryColorText.copyWith(
+                      fontWeight: medium,
+                      fontSize: 24,
+                    ),
+                  )
+                ],
               ),
-              ClipOval(
-                child: Image.asset(
-                  'assets/profile_image_default.png',
-                  width: 54,
-                ),
-              )
-            ],
-          ),
-        );
-      } else {
-        return SizedBox();
-      }
+            ),
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: photoUrl.isEmpty
+                    ? const DecorationImage(
+                        image: AssetImage('assets/profile_image_default.png'),
+                        fit: BoxFit.cover,
+                      )
+                    : DecorationImage(
+                        image: NetworkImage(photoUrl),
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
 
     Widget quotes() {
@@ -248,7 +254,7 @@ class HomePage extends StatelessWidget {
             body: SafeArea(
               child: ListView(
                 children: [
-                  header(state.user.name),
+                  header(state.user.name, state.user.photoUrl),
                   quotes(),
                   newArticles(),
                   feature(secondaryColor, 'assets/consult_room_icon.png',

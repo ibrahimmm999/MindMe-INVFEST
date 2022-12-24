@@ -148,7 +148,7 @@ class UserService {
     String fileName = basename(imageFile.path);
 
     Reference storageReference =
-        FirebaseStorage.instance.ref('users').child(fileName);
+        FirebaseStorage.instance.ref('image_profile').child(fileName);
 
     await storageReference.putFile(imageFile);
 
