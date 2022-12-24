@@ -4,7 +4,7 @@
 </h2>
 <hr>
 
- >> To watch the live demo of the program [_here_](https://youtu.be/t0LETzfHDyw)
+> To watch the live demo of the program [_here_](https://youtu.be/t0LETzfHDyw)
 
 ## Table of Contents
 1. [General Info](#general-information)
@@ -352,7 +352,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 <a name="project-status">
 
 ## Project Status
-Status Proyek: _uncomplete_
+Status Proyek: _complete_
 
 <a name="room-for-improvement">
 
