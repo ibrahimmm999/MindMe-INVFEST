@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/models/video_model.dart';
+import 'package:src/ui/user_pages/course_videos_page.dart';
 import 'package:src/ui/widgets/custom_button.dart';
 import 'package:src/ui/widgets/video_tile_card.dart';
 
@@ -19,7 +20,10 @@ class BookmarkVideoPage extends StatelessWidget {
             buttonColor: red,
             buttonText: "See Videos",
             widthButton: 120,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => CourseVideosPage()));
+            },
             heightButton: 44);
       }
 
