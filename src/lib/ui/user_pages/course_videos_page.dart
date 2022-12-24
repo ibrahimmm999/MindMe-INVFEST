@@ -49,6 +49,9 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
     }
 
     Widget videoList(List<VideoModel> videos) {
+      videos.sort(
+        (b, a) => a.date.compareTo(b.date),
+      );
       return ListView(
           padding: EdgeInsets.only(
             top: 24,
