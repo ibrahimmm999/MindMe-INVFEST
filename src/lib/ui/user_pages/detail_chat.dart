@@ -120,6 +120,8 @@ class DetailChat extends StatelessWidget {
                         Timestamp.now(),
                         state.chatId,
                       );
+                      ChatService()
+                          .updateLastMessage(chatController.text, chatId);
                       chatController.clear();
                       FocusManager.instance.primaryFocus?.unfocus();
                     }
@@ -135,7 +137,7 @@ class DetailChat extends StatelessWidget {
                           ChatService().addChat(
                             consultantId,
                             userId,
-                            'lastMessage',
+                            chatController.text,
                           );
                         }
                         context
@@ -166,6 +168,7 @@ class DetailChat extends StatelessWidget {
 
             List<MessageModel> messages = [];
             messages = ChatService().getMessageList(snapshot);
+            messages.sort((a, b) => a.date.compareTo(b.date));
 
             return Column(
               children: messages

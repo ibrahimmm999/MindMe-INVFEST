@@ -79,4 +79,13 @@ class ChatService {
         .chatId;
     return chatId;
   }
+
+  Future<void> updateLastMessage(String lastmessage, String chatId) async {
+    try {
+      DocumentReference docChat = _chatReference.doc(chatId);
+      await docChat.update({'lastMessage': lastmessage});
+    } catch (e) {
+      throw e;
+    }
+  }
 }
