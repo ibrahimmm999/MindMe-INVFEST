@@ -104,7 +104,12 @@ class HomePage extends StatelessWidget {
 
     Widget newArticleCard(ArticleModel article) {
       return GestureDetector(
-        onTap: () => DetailArticlePage(article: article),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailArticlePage(article: article),
+          ),
+        ),
         child: Container(
           margin: EdgeInsets.only(
             right: defaultMargin,
@@ -134,6 +139,7 @@ class HomePage extends StatelessWidget {
                       child: Image.network(
                         article.thumbnail,
                         width: 184,
+                        height: 139,
                         fit: BoxFit.cover,
                       ),
                     ),
