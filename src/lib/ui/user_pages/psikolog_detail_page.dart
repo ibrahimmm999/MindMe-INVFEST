@@ -67,7 +67,7 @@ class PsikologDetailPage extends StatelessWidget {
                     List<ChatModel> chats = ChatService().getChatList(snapshot);
                     var chatIdfind = chats
                         .where((element) =>
-                            element.consultanId == consultant.id &&
+                            element.consultantId == consultant.id &&
                             element.userId == state.user.id)
                         .toList();
                     if (chatIdfind.isNotEmpty) {

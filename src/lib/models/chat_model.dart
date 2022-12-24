@@ -3,30 +3,31 @@ import 'package:equatable/equatable.dart';
 class ChatModel extends Equatable {
   const ChatModel(
       {required this.chatId,
-      required this.consultanId,
+      required this.consultantId,
       required this.userId,
       this.lastMessage = ''});
 
   final String chatId;
-  final String consultanId;
+  final String consultantId;
   final String userId;
   final String lastMessage;
 
   factory ChatModel.fromJson(String chatId, Map<String, dynamic> json) {
     return ChatModel(
-        chatId: chatId,
-        lastMessage: json['lastMessage'],
-        consultanId: json['consultanId'],
-        userId: json['userId']);
+      chatId: chatId,
+      lastMessage: json['lastMessage'],
+      consultantId: json['consultantId'],
+      userId: json['userId'],
+    );
   }
 
   Map<String, dynamic> toJson() => {
-        'consultanId': consultanId,
+        'consultantId': consultantId,
         'userId': userId,
         'lastMessage': lastMessage,
       };
 
   @override
   // TODO: implement props
-  List<Object?> get props => [chatId, lastMessage, consultanId, userId];
+  List<Object?> get props => [chatId, lastMessage, consultantId, userId];
 }

@@ -115,7 +115,7 @@ class ChatPage extends StatelessWidget {
                       ),
                       children: chats.map((chat) {
                         UserModel consultan = constultant
-                            .where((element) => element.id == chat.consultanId)
+                            .where((element) => element.id == chat.consultantId)
                             .toList()[0];
                         return ChatTile(
                           imageUrl: consultan.photoUrl,

@@ -1,28 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/cubit/get_chatId_cubit.dart';
 import 'package:src/models/chat_model.dart';
+import 'package:src/models/message_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/chat_bubbles.dart';
 
+import '../../services/chat_service.dart';
+
 class DetailChat extends StatelessWidget {
-  const DetailChat(
+  DetailChat(
       {required this.name,
       required this.imageUrl,
       required this.consultantId,
-      this.chatId = '',
+      required this.chatId,
       required this.userId,
       Key? key})
       : super(key: key);
 
   final String consultantId;
-  final String chatId;
   final String userId;
   final String imageUrl;
   final String name;
+  String chatId = '';
+
+  TextEditingController chatController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
-    print(chatId);
     PreferredSizeWidget header() {
       return AppBar(
         backgroundColor: primaryColor,
@@ -77,6 +84,7 @@ class DetailChat extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFormField(
+                    controller: chatController,
                     keyboardType: TextInputType.multiline,
                     maxLines: 5,
                     minLines: 1,
@@ -101,15 +109,73 @@ class DetailChat extends StatelessWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                Image.asset(
-                  'assets/send_button.png',
-                  width: 45,
+                BlocConsumer<GetChatIdCubit, GetChatIdState>(
+                  listener: (context, state) {
+                    if (state is GetChatIdSuccess) {
+                      chatId = state.chatId;
+                      ChatService().addMessage(
+                        userId,
+                        consultantId,
+                        chatController.text,
+                        Timestamp.now(),
+                        state.chatId,
+                      );
+                      chatController.clear();
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    }
+                  },
+                  builder: (context, state) {
+                    return GestureDetector(
+                      child: Image.asset(
+                        'assets/send_button.png',
+                        width: 45,
+                      ),
+                      onTap: () {
+                        if (chatId.isEmpty) {
+                          ChatService().addChat(
+                            consultantId,
+                            userId,
+                            'lastMessage',
+                          );
+                        }
+                        context
+                            .read<GetChatIdCubit>()
+                            .getChatId(userId, consultantId);
+                      },
+                    );
+                  },
                 )
               ],
             ),
           ),
         ],
       );
+    }
+
+    Widget chat() {
+      return StreamBuilder(
+          stream: ChatService().messageStream(chatId),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox();
+            }
+
+            List<MessageModel> messages = [];
+            messages = ChatService().getMessageList(snapshot);
+
+            return Column(
+              children: messages
+                  .map((message) => ChatBubble(
+                        text: message.text,
+                        isSender: message.senderId == userId,
+                      ))
+                  .toList(),
+            );
+          });
     }
 
     Widget content() {
@@ -120,31 +186,9 @@ class DetailChat extends StatelessWidget {
           bottom: 16,
         ),
         children: [
-          ChatBubble(
-            isSender: true,
-            text: 'Haloo dok, bagaimana ya?',
-          ),
-          ChatBubble(
-            text: 'Kamu tetap semangat, jangan lupa bahagia :)',
-          ),
-          ChatBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          ChatBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          ChatBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          ChatBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          ChatBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
-          ChatBubble(
-            text: 'Terima kasih, dok. Saya jadi termotivasi',
-          ),
+          Container(
+            child: chatId.isEmpty ? SizedBox() : chat(),
+          )
         ],
       );
     }
@@ -163,3 +207,31 @@ class DetailChat extends StatelessWidget {
     );
   }
 }
+
+
+//  stream: ChatService().chatStream(),
+//         builder: (context, snapshot) {
+//           if (snapshot.hasError) {
+//             return const Text('Something went wrong');
+//           }
+
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Expanded(
+//                 child: Center(child: CircularProgressIndicator()));
+//             return Text('data');
+//           }
+//           if (!snapshot.hasData) {
+//             chatId = '';
+//           } else {
+//             List<ChatModel> chats = ChatService().getChatList(snapshot);
+//             var chatIdfind = chats
+//                 .where((element) =>
+//                     element.consultanId == consultantId &&
+//                     element.userId == userId)
+//                 .toList();
+//             if (chatIdfind.isNotEmpty) {
+//               chatId = chatIdfind.first.chatId;
+//             } else {
+//               chatId = '';
+//             }
+//           }

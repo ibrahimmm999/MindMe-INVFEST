@@ -23,7 +23,7 @@ class ChatTile extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => DetailChat(
-              consultantId: chat.consultanId,
+              consultantId: chat.consultantId,
               userId: chat.userId,
               chatId: chat.chatId,
               imageUrl: imageUrl,
