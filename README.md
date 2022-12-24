@@ -352,7 +352,7 @@ Kalian dapat melakukan setup project dengan cara clone repository ini dan instal
 <a name="project-status">
 
 ## Project Status
-Status Proyek: _uncomplete_
+Status Proyek: _complete_
 
 <a name="room-for-improvement">
 
