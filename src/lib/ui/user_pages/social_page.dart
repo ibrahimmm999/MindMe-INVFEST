@@ -11,6 +11,8 @@ import 'package:src/services/post_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/social_comment_page.dart';
 
+import '../../services/time_converter.dart';
+
 class SocialPage extends StatelessWidget {
   SocialPage({super.key});
 
@@ -62,7 +64,7 @@ class SocialPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
+              '${post.author} - ${ConvertTime().convertToAgo(post.date)}',
               style: greyText.copyWith(
                 fontWeight: medium,
                 fontSize: 12,
@@ -177,7 +179,7 @@ class SocialPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'You - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
+                'You - ${ConvertTime().convertToAgo(post.date)}',
                 style: greyText.copyWith(
                   fontWeight: medium,
                   fontSize: 12,

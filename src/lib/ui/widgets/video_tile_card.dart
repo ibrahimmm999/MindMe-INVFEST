@@ -4,6 +4,8 @@ import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_video_page.dart';
 import 'package:intl/intl.dart';
 
+import '../../services/time_converter.dart';
+
 class VideoTileCard extends StatelessWidget {
   const VideoTileCard({required this.video, super.key});
 
@@ -89,8 +91,7 @@ class VideoTileCard extends StatelessWidget {
                         height: 4,
                       ),
                       Text(
-                        (DateFormat('dd MMMM yyyy').format(video.date.toDate()))
-                            .toString(),
+                        ConvertTime().convertToAgo(video.date),
                         style: secondaryColorText.copyWith(fontSize: 8),
                       ),
                       SizedBox(

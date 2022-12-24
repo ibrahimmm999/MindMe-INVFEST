@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:src/models/article_model.dart';
+import 'package:src/services/time_converter.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_article_page.dart';
 import 'package:intl/intl.dart';
@@ -58,8 +59,7 @@ class ArticleTileCard extends StatelessWidget {
                       height: 4,
                     ),
                     Text(
-                      (DateFormat('dd MMMM yyyy').format(article.date.toDate()))
-                          .toString(),
+                      ConvertTime().convertToAgo(article.date),
                       style: secondaryColorText.copyWith(fontSize: 8),
                     ),
                     const SizedBox(

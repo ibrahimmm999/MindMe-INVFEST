@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:src/cubit/journey_cubit.dart';
 import 'package:src/models/article_model.dart';
 import 'package:src/models/journey_model.dart';
+import 'package:src/services/time_converter.dart';
 import 'package:src/ui/user_pages/detail_journey_page.dart';
 import 'package:src/ui/user_pages/journey_form_page.dart';
 
@@ -106,9 +107,7 @@ class _JourneyPageState extends State<JourneyPage> {
                         height: 4,
                       ),
                       Text(
-                        (DateFormat('dd MMMM yyyy')
-                                .format(journey.date.toDate()))
-                            .toString(),
+                        ConvertTime().convertToAgo(journey.date),
                         style: secondaryColorText.copyWith(fontSize: 8),
                       ),
                     ],

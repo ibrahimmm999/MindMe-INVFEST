@@ -6,6 +6,7 @@ import 'package:src/cubit/article_cubit.dart';
 import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/cubit/consultant_cubit.dart';
 import 'package:src/models/article_model.dart';
+import 'package:src/services/time_converter.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/articles_page.dart';
 import 'package:src/ui/user_pages/consult_room_page.dart';
@@ -145,8 +146,7 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      (DateFormat('dd MMMM yyyy').format(article.date.toDate()))
-                          .toString(),
+                      ConvertTime().convertToAgo(article.date),
                       style: secondaryColorText.copyWith(fontSize: 8),
                     ),
                     const SizedBox(height: 4),

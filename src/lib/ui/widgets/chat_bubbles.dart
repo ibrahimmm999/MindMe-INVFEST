@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:src/shared/theme.dart';
 
+import '../../services/time_converter.dart';
+
 class ChatBubble extends StatelessWidget {
   const ChatBubble(
       {Key? key, this.isSender = false, this.text = '', required this.date})
@@ -52,9 +54,7 @@ class ChatBubble extends StatelessWidget {
                         : CrossAxisAlignment.start,
                     children: [
                       Text(
-                        DateFormat('dd MMMM yyyy')
-                            .format(date.toDate())
-                            .toString(),
+                        ConvertTime().convertToAgo(date),
                         style: greyText.copyWith(
                           fontWeight: medium,
                           fontSize: 12,

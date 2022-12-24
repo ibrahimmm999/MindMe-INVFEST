@@ -4,6 +4,8 @@ import 'package:src/models/chat_model.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/user_pages/detail_chat.dart';
 
+import '../../services/time_converter.dart';
+
 class ChatTile extends StatelessWidget {
   const ChatTile(
       {required this.name,
@@ -78,8 +80,7 @@ class ChatTile extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  (DateFormat('dd MMMM yyyy').format(chat.date.toDate()))
-                      .toString(),
+                  ConvertTime().convertToAgo(chat.date),
                   style: greyText.copyWith(fontSize: 10),
                 )
               ],

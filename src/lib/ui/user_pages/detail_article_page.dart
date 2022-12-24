@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:src/cubit/auth_cubit.dart';
 import 'package:src/models/article_model.dart';
 import 'package:src/models/user_model.dart';
+import 'package:src/services/time_converter.dart';
 
 import '../../cubit/article_cubit.dart';
 import '../../shared/theme.dart';
@@ -71,9 +72,7 @@ class _DetailArticlePageState extends State<DetailArticlePage> {
                       height: 4,
                     ),
                     Text(
-                      (DateFormat('dd MMMM yyyy')
-                              .format(widget.article.date.toDate()))
-                          .toString(),
+                      ConvertTime().convertToAgo(widget.article.date),
                       style: secondaryColorText.copyWith(fontSize: 12),
                     ),
                     SizedBox(

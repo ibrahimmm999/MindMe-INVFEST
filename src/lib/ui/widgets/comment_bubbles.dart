@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:src/shared/theme.dart';
 
+import '../../services/time_converter.dart';
+
 class CommentBubble extends StatelessWidget {
   const CommentBubble(
       {Key? key,
@@ -58,8 +60,8 @@ class CommentBubble extends StatelessWidget {
                     children: [
                       Text(
                         isSender
-                            ? 'You - ${DateFormat('dd MMMM yyyy').format(date.toDate()).toString()}'
-                            : '$sender - ${DateFormat('dd MMMM yyyy').format(date.toDate()).toString()}',
+                            ? 'You - ${ConvertTime().convertToAgo(date)}'
+                            : '$sender - ${ConvertTime().convertToAgo(date)}',
                         style: greyText.copyWith(
                           fontWeight: medium,
                           fontSize: 12,

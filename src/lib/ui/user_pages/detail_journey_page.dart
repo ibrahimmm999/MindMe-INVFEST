@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:src/models/journey_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:src/services/time_converter.dart';
 
 import '../../shared/theme.dart';
 
@@ -106,8 +107,7 @@ class DetailJourneyPage extends StatelessWidget {
               height: 4,
             ),
             Text(
-              (DateFormat('dd MMMM yyyy').format(journey.date.toDate()))
-                  .toString(),
+              ConvertTime().convertToAgo(journey.date),
               style: secondaryColorText.copyWith(fontSize: 12),
             ),
             SizedBox(

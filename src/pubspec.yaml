@@ -43,6 +43,7 @@ dependencies:
   url_launcher: ^6.1.7
   youtube_player_flutter: ^8.1.1
   firebase_storage: ^11.0.9
+  timeago: ^3.2.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

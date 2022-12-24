@@ -9,6 +9,7 @@ import 'package:src/models/comment_model..dart';
 import 'package:src/models/post_model.dart';
 import 'package:src/models/user_model.dart';
 import 'package:src/services/post_service.dart';
+import 'package:src/services/time_converter.dart';
 import 'package:src/services/user_service.dart';
 import 'package:src/shared/theme.dart';
 import 'package:src/ui/widgets/comment_bubbles.dart';
@@ -70,8 +71,8 @@ class SocialCommentPage extends StatelessWidget {
           children: [
             Text(
               post.authorId == FirebaseAuth.instance.currentUser!.uid
-                  ? 'You - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}'
-                  : '${post.author} - ${DateFormat('dd MMMM yyyy').format(post.date.toDate()).toString()}',
+                  ? 'You - ${ConvertTime().convertToAgo(post.date)}'
+                  : '${post.author} - ${ConvertTime().convertToAgo(post.date)}',
               style: greyText.copyWith(
                 fontWeight: regular,
                 fontSize: 12,
