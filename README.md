@@ -4,7 +4,7 @@
 </h2>
 <hr>
 
- >> To watch the live demo of the program [_here_](https://youtu.be/t0LETzfHDyw)
+> To watch the live demo of the program [_here_](https://youtu.be/t0LETzfHDyw)
 
 ## Table of Contents
 1. [General Info](#general-information)
