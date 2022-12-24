@@ -95,8 +95,6 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     DateTime currentTime = DateTime.now();
-                    //if id not null run add data to store data into firebase
-                    //else update data based on id
                     if (widget.id == null) {
                       journeys!.add({
                         'title': (titleController.text),
@@ -152,9 +150,6 @@ class _JourneyFormPageState extends State<JourneyFormPage> {
 
     return Scaffold(
       appBar: header(),
-
-      //this form for add and edit data
-      //if have id passed from main, field will show data
       body: Form(
         key: _formKey,
         child: ListView(children: [
